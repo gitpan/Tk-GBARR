@@ -8,9 +8,16 @@
 ## Base class for the creation of all cloth objects
 ##
 
+
+package Tk::Cloth;
+
+use strict;
+use vars qw($VERSION);
+$VERSION = 1.00;
+
 package Tk::Cloth::Object;
 
-use Tk::Cloth;
+use vars qw(*Construct *DelegateFor);
 
 *Construct = Tk::Widget->can('Construct');
 *DelegateFor = Tk::Widget->can('DelegateFor');
@@ -26,8 +33,12 @@ use Tk::Submethods
 	'select' => [qw(adjust from to)];
 
 # Tk::Derived::configure and ::cget call these, as they cannot call SUPER::
+use vars qw(*configure_self *cget_self *destroy);
+
 *configure_self = \&configure;
 *cget_self = \&cget;
+# Tk objects usually has a destroy method
+*destroy = \&delete;
 
 
 sub new {
@@ -99,12 +110,10 @@ sub delete {
     $item->cloth->delete($item);
 }
 
-# Tk objects usually has a destroy method
-*destroy = \&delete;
-
 sub pack {}
 sub grid {}
 sub place {}
+sub form {}
 
 sub addtag	{ $_[0]->cloth->addtag(@_)		}
 sub bbox	{ $_[0]->cloth->bbox(@_)   		}
@@ -150,51 +159,61 @@ sub bind {
 }
 
 package Tk::Cloth::Text;
+use vars qw(@ISA);
 @ISA = qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Text';
 sub Tk_type { 'text' }
 
 package Tk::Cloth::Image;
+use vars qw(@ISA);
 @ISA = qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Image';
 sub Tk_type { 'image' }
 
 package Tk::Cloth::Arc;
+use vars qw(@ISA);
 @ISA = qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Arc';
 sub Tk_type { 'arc' }
 
 package Tk::Cloth::Bitmap;
+use vars qw(@ISA);
 @ISA = qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Bitmap';
 sub Tk_type { 'bitmap' }
 
 package Tk::Cloth::Line;
+use vars qw(@ISA);
 @ISA = qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Line';
 sub Tk_type { 'line' }
 
 package Tk::Cloth::Oval;
+use vars qw(@ISA);
 @ISA = qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Oval';
 sub Tk_type { 'oval' }
 
 package Tk::Cloth::Polygon;
+use vars qw(@ISA);
 @ISA = qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Polygon';
 sub Tk_type { 'polygon' }
 
 package Tk::Cloth::Rectangle;
+use vars qw(@ISA);
 @ISA = qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Rectangle';
 sub Tk_type { 'rectangle' }
 
 package Tk::Cloth::Window;
+use vars qw(@ISA);
 @ISA = qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Window';
 sub Tk_type { 'window' }
 
 package Tk::Cloth::Tag;
+use vars qw(@ISA);
 @ISA = qw(Tk::Derived Tk::Cloth::Item Tk::Cloth::Object);
 Construct Tk::Cloth::Object 'Tag';
 sub Tk_type { 'tag' }
@@ -280,6 +299,8 @@ use Tk::Submethods
 Construct Tk::Widget 'Cloth';
 
 # Make sure we can create items on the cloth
+
+use vars qw(@ISA *bind *raise *lower *focus);
 
 @ISA = qw(Tk::Cloth::Object Tk::Canvas);
 

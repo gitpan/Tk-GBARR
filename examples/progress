@@ -4,17 +4,17 @@ use Tk;
 use Tk::ProgressBar;
 use Tk::Scale;
 
-$mw = new MainWindow;
+my $mw = new MainWindow;
 
-$status_var = 0;
+my $status_var = 0;
 
-($fromv,$tov) = (0,100);
-foreach $loop (0..1) {
-    $res = 0;
-    $blks = 10;
-    @p = qw(top bottom left right);
-    foreach $dir (qw(n s w e)) {
-        $st = $mw->ProgressBar(
+my($fromv,$tov) = (0,100);
+foreach my $loop (0..1) {
+    my $res = 0;
+    my $blks = 10;
+    my @p = qw(top bottom left right);
+    foreach my $dir (qw(n s w e)) {
+        $mw->ProgressBar(
 	    -borderwidth => 2,
 	    -relief => 'sunken',
 	    -width => 200,

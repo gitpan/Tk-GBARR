@@ -11,7 +11,6 @@ $pane = $mw->Scrolled(Pane, Name => 'fred',
 	-gridded => 'y',
 );
 
-@side = qw(top left right bottom);
 for (0..30) {
 	my $r = int($_ / 8);
 	my $c = int($_ % 8);

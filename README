@@ -22,11 +22,8 @@ Also in the works are :-
 			is viewable)
 	Tk::MenuEntry - a text entry with a menu
 
-
-These will hopefully be in the next release, but my time is very
-limited at the moment. Feel free to mail me if you are interesed
-in seeing what I have, but I don't feel they are ready
-for release yet.
+These modules can be found in the alpha/ directory. Please feel free to
+mail me any comments you have reguarding these modules.
 
 Please mail all bugs/comments directly to me <gbarr@ti.com> as I do not
 read the Tk lists on a regular basis.

@@ -1,0 +1,9 @@
+The code in this directory is VERY alpha, it is only included in the
+distribution so that those who are interested can take a look. 
+
+Anyone who does look at this code, please fell free to make any comments
+
+To run any of these scripts you must be in the top level dist directory
+and run
+
+perl alpha/script-name

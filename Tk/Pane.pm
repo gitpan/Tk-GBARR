@@ -2,9 +2,10 @@ package Tk::Pane;
 
 use Tk;
 use strict;
-use vars qw(@ISA);
+use vars qw(@ISA $VERSION);
 
 @ISA = qw(Tk::Frame);
+$VERSION = "1.00";
 
 Construct Tk::Widget 'Pane';
 
@@ -134,9 +135,9 @@ sub Layout {
     my $xscrl = $pan->{Configure}{'-xscrollcommand'};
 
     $yscrl = undef
-	if(UNIVERSAL::isa($yscrl, 'SCALAR') && !defined($$yscrl));
+	if(defined($yscrl) && UNIVERSAL::isa($yscrl, 'SCALAR') && !defined($$yscrl));
     $xscrl = undef
-	if(UNIVERSAL::isa($xscrl, 'SCALAR') && !defined($$xscrl));
+	if(defined($xscrl) && UNIVERSAL::isa($xscrl, 'SCALAR') && !defined($$xscrl));
 
     if($why & 1) {
 	$h = $pan->{Configure}{'-height'} || 0

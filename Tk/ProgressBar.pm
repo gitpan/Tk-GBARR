@@ -3,7 +3,12 @@ package Tk::ProgressBar;
 use Tk;
 use Tk::Canvas;
 use Carp;
+use strict;
+
+use vars qw(@ISA $VERSION);
+
 @ISA = qw(Tk::Derived Tk::Canvas);
+$VERSION = "1.01";
 
 Construct Tk::Widget 'ProgressBar';
 
@@ -21,7 +26,7 @@ sub Populate {
 
     $c->ConfigSpecs(
 	-width    => [PASSIVE => undef, undef, 0],
-	-length   => [PASSIVE => undef, undef, 0],
+	'-length' => [PASSIVE => undef, undef, 0],
 	-from	  => [PASSIVE => undef, undef, 0],
 	-to	  => [PASSIVE => undef, undef, 100],
 	-blocks   => [PASSIVE => undef, undef, 10],
@@ -35,7 +40,7 @@ sub Populate {
 	-resolution
 		  => [PASSIVE => undef, undef, 1.0],
 	-highlightthickness
-		  => [SELF, 'highlightThickness','HighlightThickness',0],
+		  => [SELF => 'highlightThickness','HighlightThickness',0],
 	-troughcolor
 		  => [PASSIVE => 'troughColor', 'Background', 'grey55'],
     );
@@ -238,6 +243,8 @@ sub _arrange {
 	my $start = $ioff * ($bwidth + $gap);
 	$start += ($offset - ($ioff * $bval)) / $bval * $bwidth;
 
+	my($x0,$x1,$y0,$y1);
+	
 	if($horz) {
 	    $y0 = $y;
 	    $y1 = $y + $h;

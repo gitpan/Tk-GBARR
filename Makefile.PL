@@ -7,7 +7,7 @@ sub MY::libscan
  my($self,$path) = @_;
 
  return '' 
-	if($path =~ m:/(RCS|CVS|SCCS)/: ||
+	if($path =~ m:/(RCS|CVS|SCCS|alpha)/: ||
 	   $path =~ m:[~%]$: ||
 	   $path =~ m:\.(orig|rej|nfs[0-9A-Za-z]+|b[ac]k)$:
 	  );
@@ -18,8 +18,10 @@ sub MY::libscan
 #--- Write the Makefile
 
 WriteMakefile(
-	NAME	=> 'Tk::GBARR',
-	VERSION	=> "1.01",
+	PREREQ_PM => { 'Tk' => '402.002' }, # Tk/NumEntry need it
+	NAME	=> 'Tk',
+	DISTNAME => 'Tk-GBARR',
+	VERSION	=> "1.02",
 	'dist'	=> {
 			COMPRESS 	=> 'gzip -9f',
 			SUFFIX   	=> '.gz', 

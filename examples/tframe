@@ -15,10 +15,10 @@ $frame = $mw->TFrame(
 	-relief => 'groove'
 );
 
-$frame->Label(-text => 'label1')->pack(-side => 'left');
-$frame->Label(-text => 'label1')->pack(-side => 'right');
-$frame->Label(-text => 'label1')->pack(-side => 'top');
-$frame->Label(-text => 'label1')->pack(-side => 'bottom');
+$frame->Label(-text => 'Left')->pack(-side => 'left');
+$frame->Label(-text => 'Right')->pack(-side => 'right');
+$frame->Label(-text => 'Top')->pack(-side => 'top');
+$frame->Label(-text => 'Bottom')->pack(-side => 'bottom');
 
 $frame->pack(-fill => 'both', -expand => 1);
 

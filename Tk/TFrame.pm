@@ -1,8 +1,11 @@
 package Tk::TFrame;
 
 use Tk;
+use strict;
+use vars qw($VERSION @ISA);
 
 @ISA = qw(Tk::Frame);
+$VERSION = "1.00";
 
 Construct Tk::Widget "TFrame";
 
