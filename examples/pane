@@ -1,0 +1,35 @@
+#!/usr/local/bin/perl
+
+use Tk;
+use Tk::Pane;
+
+$mw = new MainWindow;
+
+$pane = $mw->Scrolled(Pane, Name => 'fred',
+	-scrollbars => 'soe',
+	-sticky => 'we',
+	-gridded => 'y',
+);
+
+@side = qw(top left right bottom);
+for (0..30) {
+	my $r = int($_ / 8);
+	my $c = int($_ % 8);
+	$b = $pane->Button(-text => 'hello ' . $_);
+	$b->grid(-padx => 10, -pady => 10,
+		-row => 2 * $r + $c % 2,
+		-column => 2 * $c + $r % 2
+	);
+}
+
+$pane->Label(
+	-text => "qwertyriuoeutroe gjhfjghifd gfojgof\n fgdhgfhjds gfhjdgfhjds\nd\n"
+)->grid(
+	-padx => 10,
+	-pady => 10,
+	-row => 2,
+	-column => 2,
+);
+$pane->pack(-fill => 'both', -expand => 1);
+
+Tk::MainLoop;

@@ -1,0 +1,38 @@
+This distribution is my contribution to the ever growing collection
+of Tk Widgets, currently it includes
+
+	Tk::Cloth  - An OO interface to Tk::Canvas
+	Tk::Pane   - A widget panner (view only part of a widget)
+	Tk::TFrame - A frame with a title
+
+The documentation is minimal (or even non-existant) but I was
+requested to release them before my life enters a stage of
+turmoil (I am moving to the US real soon). I will release
+better documentation after I have settled. In the mean time
+the I hope the examples directory is sufficient.
+
+Also in the works are :-
+
+	Tk::MenuEntry - a text entry with a menu
+	Tk::Statusbar - a widget to show completion status etc
+	Tk::ListMgr   - A widget that manages lists in various ways
+			eg, multi column, array
+	Tk::IFrame    - An index frame (ie has tabs to select which sub-frame
+			is viewable)
+	Tk::NumEntry  - An entry widget that accepts numbers and has up/down
+			buttons for in/decrement.
+
+
+These will hopefully be in the next release, but my time is very
+limited at the moment. Feel free to mail me if you are interesed
+in seeing what I have, but I don't feel they are ready
+for release yet.
+
+Please mail all bugs/comments directly to me <gbarr@ti.com> as I do not
+read the Tk lists on a regular basis.
+
+Copyright (c) 1997 Graham Barr <gbarr@ti.com>. All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+Share and Enjoy !

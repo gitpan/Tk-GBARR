@@ -1,0 +1,25 @@
+#!/usr/local/bin/perl
+
+use Tk;
+use Tk::TFrame;
+
+$mw = new MainWindow;
+
+$frame = $mw->TFrame(
+	-label => [
+		-text => 'Title',
+		-borderwidth => 2,
+		-relief => 'groove'
+	],
+	-borderwidth => 2,
+	-relief => 'groove'
+);
+
+$frame->Label(-text => 'label1')->pack(-side => 'left');
+$frame->Label(-text => 'label1')->pack(-side => 'right');
+$frame->Label(-text => 'label1')->pack(-side => 'top');
+$frame->Label(-text => 'label1')->pack(-side => 'bottom');
+
+$frame->pack(-fill => 'both', -expand => 1);
+
+Tk::MainLoop;
