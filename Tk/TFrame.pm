@@ -20,8 +20,12 @@ sub Populate {
 	-relief => 'flat'
     );
 
-    push @label, @{$args->{'-label'}}
-	if exists $args->{'-label'};
+    if (exists $args->{'-label'}) {
+       if (not ref $args->{'-label'}) {
+           $args->{'-label'} = [ -text => $args->{'-label'} ];
+       }
+       push @label, @{$args->{'-label'}};
+    }
 
     my $label     = $frame->Component(Label => "label",@label);
 
@@ -36,22 +40,22 @@ sub Populate {
 	-relwidth => 1.0,
 	-relheight => 1.0,
 	-height => -int($rh / 2),
-	-y => int($rh / 2)
+       '-y' => int($rh / 2)
     );
 
     $container->place(
 	-in => $border,
-	-x => $px,
+       '-x' => $px,
 	-width => -2 * $px,
 	-relwidth => 1.0,
 
-	-y => int($rh / 2) + $py,
+       '-y' => int($rh / 2) + $py,
 	-height => -int($rh / 2) - $py*2,
 	-relheight => 1.0,
     );
 
     $label->place(
-	-x => 10, -y => 0
+       '-x' => 10, '-y' => 0
     );
 
     $frame->bind('<Configure>', [\&layoutRequest, $frame]);
@@ -142,13 +146,19 @@ Tk::TFrame - A Titled Frame widget
 
     use Tk::TFrame;
     
-    $frame = $parent->TFrame(
+    $frame1 = $parent->TFrame(
 	-label => [ -text => 'Title' ]
 	-borderwidth => 2,
 	-relief => 'groove'
     );
 
-    $frame->pack;
+    # or simply
+    $frame2 = $parent->TFrame(
+       -label => 'Title'
+    );
+
+    $frame1->pack;
+    $frame2->pack;
 
 =head1 DESCRIPTION
 
@@ -157,7 +167,7 @@ by half of it's height.
 
 =head1 AUTHOR
 
-Graham Barr E<lt>F<bodg@ti.com>E<gt>
+Graham Barr E<lt>F<gbarr@ti.com>E<gt>
 
 =head1 COPYRIGHT
 

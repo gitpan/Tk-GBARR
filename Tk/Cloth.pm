@@ -479,7 +479,7 @@ items.
 
 =head1 AUTHOR
 
-Graham Barr E<lt>F<bodg@ti.com>E<gt>
+Graham Barr E<lt>F<gbarr@ti.com>E<gt>
 
 =head1 COPYRIGHT
 

@@ -1,0 +1,16 @@
+#!/usr/local/bin/perl
+
+use Tk;
+use Tk::NumEntry;
+
+$mw = new MainWindow;
+
+$nume = $mw->NumEntry();
+
+$nume->pack(-side => 'top', -fill => 'x');
+
+$nume = $mw->NumEntry(-minvalue => 10, -maxvalue => 100);
+
+$nume->pack(-side => 'top', -fill => 'x');
+
+Tk::MainLoop;

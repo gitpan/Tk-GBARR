@@ -1,0 +1,45 @@
+#!/usr/local/bin/perl
+
+use Tk;
+use Tk::ProgressBar;
+use Tk::Scale;
+
+$mw = new MainWindow;
+
+$status_var = 0;
+
+($fromv,$tov) = (0,100);
+foreach $loop (0..1) {
+    $res = 0;
+    $blks = 10;
+    @p = qw(top bottom left right);
+    foreach $dir (qw(n s w e)) {
+        $st = $mw->ProgressBar(
+	    -borderwidth => 2,
+	    -relief => 'sunken',
+	    -width => 200,
+	    -padx => 2,
+	    -pady => 2,
+	    -variable => \$status_var,
+	    -colors => [0 => 'green', 50 => 'yellow' , 80 => 'red'],
+	    -resolution => $res,
+	    -blocks => $blks,
+	    -anchor => $dir,
+	    -from => $fromv,
+	    -to => $tov
+        )->pack(
+	    -padx => 10,
+	    -pady => 10,
+	    -side => pop(@p),
+	    -fill => 'both',
+	    -expand => 1
+	);
+	$blks = abs($blks - ($res * 2));
+	$res = abs(5 - $res);
+    }
+    ($fromv,$tov) = ($tov,$fromv);
+}
+
+$mw->Scale(-from => 0, -to => 100, -variable => \$status_var)->pack;
+
+Tk::MainLoop;

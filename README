@@ -1,9 +1,12 @@
 This distribution is my contribution to the ever growing collection
 of Tk Widgets, currently it includes
 
-	Tk::Cloth  - An OO interface to Tk::Canvas
-	Tk::Pane   - A widget panner (view only part of a widget)
-	Tk::TFrame - A frame with a title
+	Tk::Cloth       - An OO interface to Tk::Canvas
+	Tk::Pane        - A widget panner (view only part of a widget)
+	Tk::TFrame      - A frame with a title
+	Tk::ProgressBar - a widget to show completion status etc
+	Tk::NumEntry    - An entry widget that accepts numbers and has up/down
+			  buttons for in/decrement.
 
 The documentation is minimal (or even non-existant) but I was
 requested to release them before my life enters a stage of
@@ -13,14 +16,11 @@ the I hope the examples directory is sufficient.
 
 Also in the works are :-
 
-	Tk::MenuEntry - a text entry with a menu
-	Tk::Statusbar - a widget to show completion status etc
 	Tk::ListMgr   - A widget that manages lists in various ways
 			eg, multi column, array
 	Tk::IFrame    - An index frame (ie has tabs to select which sub-frame
 			is viewable)
-	Tk::NumEntry  - An entry widget that accepts numbers and has up/down
-			buttons for in/decrement.
+	Tk::MenuEntry - a text entry with a menu
 
 
 These will hopefully be in the next release, but my time is very
