@@ -168,62 +168,57 @@ sub bind {
 }
 
 package Tk::Cloth::Text;
-use vars qw(@ISA);
-@ISA = qw(Tk::Cloth::Item);
+use base qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Text';
 sub Tk_type { 'text' }
 
 package Tk::Cloth::Image;
-use vars qw(@ISA);
-@ISA = qw(Tk::Cloth::Item);
+use base qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Image';
 sub Tk_type { 'image' }
 
 package Tk::Cloth::Arc;
-use vars qw(@ISA);
-@ISA = qw(Tk::Cloth::Item);
+use base qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Arc';
 sub Tk_type { 'arc' }
 
 package Tk::Cloth::Bitmap;
-use vars qw(@ISA);
-@ISA = qw(Tk::Cloth::Item);
+use base qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Bitmap';
 sub Tk_type { 'bitmap' }
 
 package Tk::Cloth::Line;
-use vars qw(@ISA);
-@ISA = qw(Tk::Cloth::Item);
+use base qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Line';
 sub Tk_type { 'line' }
 
 package Tk::Cloth::Oval;
-use vars qw(@ISA);
-@ISA = qw(Tk::Cloth::Item);
+use base qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Oval';
 sub Tk_type { 'oval' }
 
 package Tk::Cloth::Polygon;
-use vars qw(@ISA);
-@ISA = qw(Tk::Cloth::Item);
+use base qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Polygon';
 sub Tk_type { 'polygon' }
 
 package Tk::Cloth::Rectangle;
-use vars qw(@ISA);
-@ISA = qw(Tk::Cloth::Item);
+use base qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Rectangle';
 sub Tk_type { 'rectangle' }
 
 package Tk::Cloth::Window;
-use vars qw(@ISA);
-@ISA = qw(Tk::Cloth::Item);
+use base qw(Tk::Cloth::Item);
 Construct Tk::Cloth::Object 'Window';
 sub Tk_type { 'window' }
 
+package Tk::Cloth::Grid;
+use base qw(Tk::Cloth::Item);
+Construct Tk::Cloth::Object 'Grid';
+sub Tk_type { 'grid' }
+
 package Tk::Cloth::Tag;
-use vars qw(@ISA);
-@ISA = qw(Tk::Derived Tk::Cloth::Item Tk::Cloth::Object);
+use base qw(Tk::Derived Tk::Cloth::Item Tk::Cloth::Object);
 Construct Tk::Cloth::Object 'Tag';
 sub Tk_type { 'tag' }
 sub BackTrace { shift->cloth->BackTrace(@_); }
@@ -310,8 +305,8 @@ Construct Tk::Widget 'Cloth';
 
 # Make sure we can create items on the cloth
 
-use vars qw(@ISA *bind *raise *lower *focus);
-@ISA = qw(Tk::Cloth::Object Tk::Derived Tk::Canvas);
+use vars qw(*bind *raise *lower *focus);
+use base qw(Tk::Cloth::Object Tk::Derived Tk::Canvas);
 
 *bind  = Tk::Widget->can('bind');
 *raise = Tk::Widget->can('raise');

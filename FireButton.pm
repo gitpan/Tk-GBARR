@@ -9,15 +9,16 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Button);
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 Construct Tk::Widget 'FireButton';
 
-#my($DECBITMAP,$INCBITMAP);
-use vars qw($DECBITMAP $INCBITMAP);
+use vars qw($DECBITMAP $INCBITMAP $HORIZDECBITMAP $HORIZINCBITMAP);
 
 $INCBITMAP = __PACKAGE__ . "::inc";
 $DECBITMAP = __PACKAGE__ . "::dec";
+$HORIZINCBITMAP = __PACKAGE__ . "::horizinc";
+$HORIZDECBITMAP = __PACKAGE__ . "::horizdec";
 
 my $def_bitmaps = 0;
 
@@ -35,6 +36,22 @@ sub ClassInit {
 
 	# And of course, decrement is the reverse of increment :-)
 	$mw->DefineBitmap($DECBITMAP => 8,5, scalar reverse $bits);
+
+	my @rot_bits = (".....",
+			".1...",
+			".11..",
+			".111.",
+			".111.",
+			".11..",
+			".1...",
+			".....");
+	my $rot_bits          = pack("b5"x8, @rot_bits);
+	my $mirrored_rot_bits = pack("b5"x8, map { scalar reverse } @rot_bits);
+
+	$mw->DefineBitmap($HORIZINCBITMAP => 5,8, $rot_bits);
+	$mw->DefineBitmap($HORIZDECBITMAP => 5,8, $mirrored_rot_bits);
+
+	$def_bitmaps = 1;
     }
 
     $class->SUPER::ClassInit($mw);
@@ -107,6 +124,8 @@ Tk::FireButton - Button that keeps invoking callback when pressed
     # May/should change:
     $w->Whatever(... -bitmap => $Tk::FireButton::INCBITMAP, ...);
     $w->Whatever(... -bitmap => $Tk::FireButton::DECBITMAP, ...);
+    $w->Whatever(... -bitmap => $Tk::FireButton::HORIZINCBITMAP, ...);
+    $w->Whatever(... -bitmap => $Tk::FireButton::HORIZDECBITMAP, ...);
 
 
 =head1 DESCRIPTION
@@ -114,6 +133,11 @@ Tk::FireButton - Button that keeps invoking callback when pressed
 B<FireButton> is-a B<Button> widget (see L<Tk::Button>) that
 keeps invoking the callback bound to it as long as the <FireButton>
 is pressed.
+
+Four suitable bitmaps are predefined in this package: $INCBITMAP and
+$DECBITMAP for vertical increment and decrement buttons, and
+$HORIZINCBITMAP and $HORIZDECBITMAP for horizontal increment and
+decrement buttons.
 
 
 =head1 SUPER-CLASS

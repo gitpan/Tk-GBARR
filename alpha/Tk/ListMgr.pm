@@ -793,7 +793,7 @@ sub yview {
 package Tk::ListMgr::Item;
 
 use vars qw(@ISA);
-
+use Tk::Cloth;
 @ISA = qw(Tk::Cloth::Tag);
 
 Construct Tk::Cloth 'ListItem';

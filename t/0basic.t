@@ -30,8 +30,6 @@ BEGIN
 	FireButton
 	NumEntryPlain
 	NumEntry
-	Pane
-	ProgressBar
 	TFrame
       );
 

@@ -1,14 +1,14 @@
 
 package Tk::NumEntryPlain;
 
-use Tk (); 
+use Tk ();
 use Tk::Derived;
 use Tk::Entry;
 use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Entry);
-$VERSION = "0.08";
+$VERSION = "0.09";
 
 Construct Tk::Widget 'NumEntryPlain';
 
@@ -27,39 +27,48 @@ sub ClassInit {
 
 ## Bindings callbacks
 
+sub _parent {
+    my $e = shift;
+
+    my $parent = $e->cget(-parent);
+    if (!defined $parent) {
+	$e;
+    } else {
+	$parent;
+    }
+}
+
 sub Leave {
     my $e = shift;
-    $e->incdec(0);  # range check
+    $e->_parent->incdec(0);  # range check
 }
 
 sub Return {
     my $e = shift;
-    my $cmd = $e->{Configure}{'-command'};
 
     my $v = $e->value; # range check
 
-    $cmd->Call($v)
-	if $cmd;
+    $e->_parent->Callback(-command => $v);
 }
 
 sub Up {
     my $e = shift;
-    $e->incdec(1,'initial');
+    $e->_parent->incdec(1,'initial');
 }
 
 sub Down {
     my $e = shift;
-    $e->incdec(-1,'initial');
+    $e->_parent->incdec(-1,'initial');
 }
 
 sub Insert {
     my($e,$c) = @_;
 
     if($c =~ /^[-0-9]$/) {
-	$e->SUPER::Insert($c);
+	$e->_parent->SUPER::Insert($c);
     }
     elsif(defined($c) && length($c)) {
-	$e->_ringBell;
+	$e->_parent->_ringBell;
     }
 }
 
@@ -80,6 +89,7 @@ sub Populate {
         -minvalue    => [PASSIVE  => undef,         undef,         undef     ],
         -bell        => [PASSIVE  => "bell",        "Bell",        1         ],
         -command     => [CALLBACK => undef,         undef,         undef     ],
+        -parent      => [PASSIVE  => undef,         undef,         undef     ],
     );
 
 }
@@ -124,7 +134,7 @@ sub _ringBell {
 
 
 sub incdec {
-    my($e,$inc,$i) = @_;
+    my($e,$inc) = @_;
     my $val = $e->get;
 
     if($inc == 0 && $val =~ /^-?$/) {
@@ -212,6 +222,17 @@ L<"CAVEATS"> below).
 Specifies the value to be inserted into the entry widget. Similar
 to the standard B<-text> option, but will perform a range
 check on the value.
+
+=back
+
+=head1 WIDGET METHODS
+
+=over 4
+
+=item I<$numentry>->B<incdec>(I<increment>)
+
+Increment the value of the entry widget by the specified increment. If
+increment is 0, then perform a range check.
 
 =back
 

@@ -11,7 +11,7 @@ sub MY::libscan
 	   $path =~ m:[~%]$: ||
 	   $path =~ m:\.(orig|rej|nfs[0-9A-Za-z]+|b[ac]k)$:
 	  );
- 
+
  $path;
 }
 
@@ -21,10 +21,18 @@ WriteMakefile(
 	PREREQ_PM => { 'Tk' => '402.002' }, # Tk/NumEntry need it
 	NAME	=> 'Tk::GBARR',
 	DISTNAME => 'Tk-GBARR',
-	VERSION	=> "1.0401",
+	VERSION	=> "2.00",
 	'dist'	=> {
 			COMPRESS 	=> 'gzip -9f',
 			SUFFIX   	=> '.gz', 
 			#DIST_DEFAULT 	=> 'all tardist',
 		   },
 );
+
+sub MY::postamble {
+	'
+demo :: pure_all
+	$(FULLPERL) -w -I$(SITELIBEXP)/Tk/demos/widget_lib -I$(SITEARCHEXP)/Tk/demos/widget_lib -Mblib demos/date.pl
+
+';
+}

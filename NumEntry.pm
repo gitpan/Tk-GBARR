@@ -8,7 +8,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Frame);
-$VERSION = '1.05';
+$VERSION = '1.06';
 
 Construct Tk::Widget 'NumEntry';
 
@@ -22,22 +22,33 @@ sub Populate {
     require Tk::FireButton;
     require Tk::NumEntryPlain;
 
+    my $orient = delete $args->{-orient} || "vertical";
+
     my $e = $f->Component( NumEntryPlain => 'entry',
         -borderwidth        => 0,
         -highlightthickness => 0,
+	-parent             => $f,
     );
 
     my $binc = $f->Component( FireButton => 'inc',
-	-bitmap		    => $Tk::FireButton::INCBITMAP,
-	-command	    => sub { $e->incdec(1) },
+	-bitmap		    => ($orient =~ /^vert/
+				? $Tk::FireButton::INCBITMAP
+				: $Tk::FireButton::HORIZINCBITMAP
+			       ),
+#	-command	    => sub { $e->incdec(1) },
+	-command	    => sub { $f->incdec(1) },
 	-takefocus	    => 0,
 	-highlightthickness => 0,
 	-anchor             => 'center',
     );
 
     my $bdec = $f->Component( FireButton => 'dec',
-	-bitmap		    => $Tk::FireButton::DECBITMAP,
-	-command	    => sub { $e->incdec(-1) },
+	-bitmap		    => ($orient =~ /^vert/
+				? $Tk::FireButton::DECBITMAP
+				: $Tk::FireButton::HORIZDECBITMAP
+			       ),
+#	-command	    => sub { $e->incdec(-1) },
+	-command	    => sub { $f->incdec(-1) },
 	-takefocus	    => 0,
 	-highlightthickness => 0,
 	-anchor             => 'center',
@@ -49,8 +60,13 @@ sub Populate {
     $f->gridRowconfigure(0, -weight => 1);
     $f->gridRowconfigure(1, -weight => 1);
 
-    $binc->grid(-row => 0, -column => 1, -sticky => 'news');
-    $bdec->grid(-row => 1, -column => 1, -sticky => 'news');
+    if ($orient eq 'vertical') {
+	$binc->grid(-row => 0, -column => 1, -sticky => 'news');
+	$bdec->grid(-row => 1, -column => 1, -sticky => 'news');
+    } else {
+	$binc->grid(-row => 0, -column => 2, -sticky => 'news');
+	$bdec->grid(-row => 0, -column => 1, -sticky => 'news');
+    }
 
     $e->grid(-row => 0, -column => 0, -rowspan => 2, -sticky => 'news');
 
@@ -126,7 +142,7 @@ following options
 Besides the standard options of the L<Button|Tk::Button> widget
 NumEntry supports:
 
-B<-repeatdelay> B<-repeatinterval>
+B<-orient> B<-repeatdelay> B<-repeatinterval>
 
 =head1 WIDGET-SPECIFIC OPTIONS
 
@@ -140,7 +156,7 @@ B<-repeatdelay> B<-repeatinterval>
 
 =item Fallback:		B<1>
 
-boolian that defines if the inc. and dec buttons are visible.
+Boolean that defines if the inc and dec buttons are visible.
 
 =back
 

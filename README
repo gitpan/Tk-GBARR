@@ -4,12 +4,15 @@ CONTENTS
   of Tk Widgets, currently it includes
 
 	Tk::Cloth       - An OO interface to Tk::Canvas
-	Tk::Pane        - A widget panner (view only part of a widget)
 	Tk::TFrame      - A frame with a title
-	Tk::ProgressBar - a widget to show completion status etc
 	Tk::NumEntry    - An entry widget that accepts numbers and has up/down
 			  buttons for in/decrement.
 	Tk::FireButton  - Button that keeps invoking command when pressed
+
+  Tk::Pane and Tk::ProgressBar are no longer part of this
+  distribution, becase they are included in standard Perl/Tk since
+  800.016. For older perl/Tk's, you can still grab the old 1.0401
+  Tk-GBARR distribution from CPAN.
 
 REQUIREMENTS
 
@@ -20,25 +23,7 @@ REQUIREMENTS
 
 CHANGES
 
-A complete list of changes is in the ChangeLog file.  Here
-a short summary whats new in the release V1.04:
-
-	All widgets:
-		o Documention more like in Tk800 docs
-
-	Tk::NumEntry
-		o fixed hidden FireButton take focus
-		o -textvariable now works
-
-	Tk::NumEntryPlain
-		o Fixed wrong option definition
-
-	Tk::ProgressBar
-	        o value() method now resets value to -from option
-		  value when it get the undef value. (Now creating
-		  a ProgressBar without args does not complain about
-		  undefined values.
-		
+A complete list of changes is in the Changes file.
 
 The documentation is minimal (or even non-existant) but I was
 requested to release them before my life enters a stage of
@@ -49,7 +34,9 @@ Please send all bugs/comments/patches directly to the ptk mailing list
 
 	ptk@lists.stanford.edu
 
-The distribution is currently maintained by Achim Bohnet <ach@mpe.mpg.de>.
+or to the current maintainer
+
+	Slaven Rezic <eserte@cs.tu-berlin.de>
 
 Copyright (c) 1997-1998 Graham Barr <gbarr@pobox.com>. All rights reserved.
 This program is free software; you can redistribute it and/or modify it

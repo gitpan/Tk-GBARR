@@ -1,4 +1,18 @@
+*** Release 2.0
 
+  - Removed Tk::Pane and Tk::ProgressBar - these are in the standard
+    Tk distribution. To get these modules, grab the old 1.401 Tk-GBARR
+    distribution.
+  - Better subclassing
+  - FireButton has now horizontal bitmaps, too. The new option -orient
+    in NumEntry can be used to create horizontal bitmaps.
+  - New Cloth item type Grid
+  - Replaced @ISA with "use base"
+  - Some POD additions.
+  - More regression tests
+
+*** Release ?
+	
   Tk::ProgressBar
 	o value() method now resets value to -from option
 	  value when it get the undef value. (Now creating
