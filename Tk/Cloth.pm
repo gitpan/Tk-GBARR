@@ -8,19 +8,23 @@
 ## Base class for the creation of all cloth objects
 ##
 
-
 package Tk::Cloth;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = 1.00;
+
+$VERSION = "1.01";
 
 package Tk::Cloth::Object;
 
-use vars qw(*Construct *DelegateFor);
+use vars qw(*Construct *DelegateFor *privateData);
+
+# I cannot inherit from Tk::Widget as I am not a widget, but I do
+# want to use some of the methods widgets have.
 
 *Construct = Tk::Widget->can('Construct');
 *DelegateFor = Tk::Widget->can('DelegateFor');
+*privateData = Tk::Widget->can('privateData');
 
 ##
 ## base class for all cloth items
@@ -105,10 +109,15 @@ sub children { () }
 sub delete {
     my $item = shift;
 
-    map { $_->forget($item) } $item->gettags;
+    foreach ($item->gettags) {
+	$_->forget($item) if defined $_;
+    }
 
     $item->cloth->delete($item);
 }
+
+# Tk objects usually has a destroy method
+*destroy = \&delete;
 
 sub pack {}
 sub grid {}
@@ -217,6 +226,7 @@ use vars qw(@ISA);
 @ISA = qw(Tk::Derived Tk::Cloth::Item Tk::Cloth::Object);
 Construct Tk::Cloth::Object 'Tag';
 sub Tk_type { 'tag' }
+sub BackTrace { shift->cloth->BackTrace(@_); }
 
 
 sub optionGet {
@@ -301,8 +311,7 @@ Construct Tk::Widget 'Cloth';
 # Make sure we can create items on the cloth
 
 use vars qw(@ISA *bind *raise *lower *focus);
-
-@ISA = qw(Tk::Cloth::Object Tk::Canvas);
+@ISA = qw(Tk::Cloth::Object Tk::Derived Tk::Canvas);
 
 *bind  = Tk::Widget->can('bind');
 *raise = Tk::Widget->can('raise');
@@ -348,7 +357,7 @@ sub delete {
     foreach $item (@_) {
 	push @tags, $item->tag;
 	foreach $parent ($item->gettags) {
-	    $parent->forget($item)
+	    $parent->forget($item) if defined $parent;
 	}
     }
 
@@ -369,7 +378,7 @@ sub dtag {
     else {
 	my $tag;
 	foreach $tag ($item->gettags) {
-	    $tag->forget($item)
+	    $tag->forget($item) if defined $tag;
 	}
     }
 
@@ -500,7 +509,7 @@ items.
 
 =head1 AUTHOR
 
-Graham Barr E<lt>F<gbarr@ti.com>E<gt>
+Graham Barr E<lt>F<gbarr@pobox.com>E<gt>
 
 =head1 COPYRIGHT
 

@@ -1,3 +1,9 @@
+# Tk::Pane.pm
+#
+# Copyright (c) 1995 Graham Barr <gbarr@ti.com>. All rights reserved.
+# This program is free software; you can redistribute it and/or
+# modify it under the same terms as Perl itself.
+
 package Tk::Pane;
 
 use Tk;
@@ -5,7 +11,8 @@ use strict;
 use vars qw(@ISA $VERSION);
 
 @ISA = qw(Tk::Frame);
-$VERSION = "1.00";
+
+$VERSION = "1.01";
 
 Construct Tk::Widget 'Pane';
 
@@ -24,7 +31,15 @@ sub Populate {
     $pan->DoWhenIdle(['Manage',$pan,$frame]);
     $pan->DoWhenIdle(['QueueLayout',$pan,1]);
 
-    $pan->Delegates(DEFAULT => $frame);
+    $pan->Delegates(
+	DEFAULT => $frame,
+	# FIXME
+	# These are a hack to avoid an existing bug in Tk::Widget::DelegateFor
+	# which has been reported and should be fixed in the next Tk release
+	see	=> $pan,
+	xview	=> $pan,
+	yview	=> $pan,
+    );
 
     $pan->ConfigSpecs(
 	DEFAULT		=> [$frame],
@@ -78,12 +93,12 @@ sub AdjustXY {
     if($w >= $W) {
 	my $v = 0;
 	if($getx) {
-	$v |= 1 if $st =~ /w/i;
-	$v |= 2 if $st =~ /e/i;
+	    $v |= 1 if $st =~ /[Ww]/;
+	    $v |= 2 if $st =~ /[Ee]/;
 	}
 	else {
-	$v |= 1 if $st =~ /n/i;
-	$v |= 2 if $st =~ /s/i;
+	    $v |= 1 if $st =~ /[Nn]/;
+	    $v |= 2 if $st =~ /[Ss]/;
 	}
 
 	if($v == 0) {
@@ -187,8 +202,55 @@ sub Manage {
     $m->QueueLayout(2);
 }
 
-sub xview { xyview(1,@_); }
-sub yview { xyview(0,@_); }
+sub xview {
+    my $pan = shift;
+
+    unless(@_) {
+    	my $scrl = $pan->{Configure}{'-xscrollcommand'};
+	return (0,1) unless $scrl;
+	my $slv = $pan->Subwidget('frame');
+	my $sw  = $slv->ReqWidth;
+	my $ldx = $pan->rootx - $slv->rootx;
+	my $rdx = $ldx + $pan->width;
+	$ldx = $ldx <= 0   ? 0 : $ldx / $sw;
+	$rdx = $rdx >= $sw ? 1 : $rdx / $sw;
+	return( $ldx , $rdx);
+    }
+    elsif(@_ == 1) {
+	my $widget = shift;
+	my $slv = $pan->Subwidget('frame');
+	xyview(1,$pan,
+		moveto => ($widget->rootx - $slv->rootx) / $slv->ReqWidth);
+    }
+    else {
+	xyview(1,$pan,@_);
+    }
+}
+
+sub yview {
+    my $pan = shift;
+
+    unless(@_) {
+	my $scrl = $pan->{Configure}{'-yscrollcommand'};
+	return (0,1) unless $scrl;
+	my $slv = $pan->Subwidget('frame');
+	my $sh  = $slv->ReqHeight;
+	my $tdy = $pan->rooty - $slv->rooty;
+	my $bdy = $tdy + $pan->height;
+	$tdy = $tdy <= 0   ? 0 : $tdy / $sh;
+	$bdy = $bdy >= $sh ? 1 : $bdy / $sh;
+	return( $tdy, $bdy);
+    }
+    elsif(@_ == 1) {
+	my $widget = shift;
+	my $slv = $pan->Subwidget('frame');
+	xyview(0,$pan,
+		moveto => ($widget->rooty - $slv->rooty) / $slv->ReqHeight);
+    }
+    else {
+	xyview(0,$pan,@_);
+    }
+}
 
 sub xyview {
     my($horz,$pan,$cmd,$val,$mul) = @_;
@@ -225,7 +287,7 @@ sub xyview {
 	my $do_gridded = ($gridded eq 'both'
 				|| (!$horz == ($gridded ne 'x'))) ? 1 : 0;
 
-	if($do_gridded && $slv->isa('Tk::Frame') && $mul eq 'pages') {
+	if($do_gridded && $mul eq 'pages') {
 	    my $ch = ($slv->children)[0];
 	    if(defined($ch) && $ch->manager eq 'grid') {
 		@a = $horz
@@ -275,6 +337,55 @@ sub xyview {
     $scrl->Call(-$XY / $WH,(-$XY + $wh) / $WH);
 }
 
+sub see {
+    my $pan = shift;
+    my $widget = shift;
+    my %opt = @_;
+    my $slv = $pan->Subwidget('frame');
+
+    my $anchor = defined $opt{'-anchor'} ? $opt{'-anchor'} : "";
+    
+    if($pan->{Configure}{'-yscrollcommand'}) {
+	my $yanchor = lc(($anchor =~ /([NnSs]?)/)[0] || "");
+	my $pty = $pan->rooty;
+	my $ph  = $pan->height;
+	my $pby = $pty + $ph;
+	my $ty  = $widget->rooty;
+	my $wh  = $widget->height;
+	my $by  = $ty + $wh;
+	my $h   = $slv->ReqHeight;
+
+	if($yanchor eq 'n' || ($yanchor ne 's' && ($wh >= $h || $ty < $pty))) {
+	    my $y = $ty - $slv->rooty;
+	    $pan->yview(moveto => $y / $h);
+	}
+	elsif($yanchor eq 's' || $by > $pby) {
+	    my $y = $by - $ph - $slv->rooty;
+	    $pan->yview(moveto => $y / $h);
+	}
+    }
+
+    if($pan->{Configure}{'-xscrollcommand'}) {
+	my $xanchor = lc(($anchor =~ /([WwEe]?)/)[0] || "");
+	my $ptx = $pan->rootx;
+	my $pw  = $pan->width;
+	my $pbx = $ptx + $pw;
+	my $tx  = $widget->rootx;
+	my $ww  = $widget->width;
+	my $bx  = $tx + $ww;
+	my $w   = $slv->ReqWidth;
+
+	if($xanchor eq 'w' || ( $xanchor ne 'e' && ($ww >= $w || $tx < $ptx))) {
+	    my $x = $tx - $slv->rootx;
+	    $pan->xview(moveto => $x / $w);
+	}
+	elsif($xanchor eq 'e' || $bx > $pbx) {
+	    my $x = $bx - $pw - $slv->rootx;
+	    $pan->xview(moveto => $x / $w);
+	}
+    }
+}
+
 1;
 
 __END__
@@ -299,12 +410,119 @@ Tk::Pane - A window panner
 
 =head1 DESCRIPTION
 
-C<Tk::Pane> provides creates a widget which allows you to view
-only part of a sub-widget.
+C<Tk::Pane> provides a scrollable frame widget. Once created it can be
+treated as a frame, except it is scrollable.
+
+=head1 OPTIONS
+
+=over 4
+
+=item -gridded => I<direction>
+
+Specifies if the top and left edges of the pane should snap to a
+grid column. This option is only useful if the widgets in the pane
+are managed by the I<grid> geometry manager. Possible values are
+B<x>, B<y> and B<xy>.
+
+=item -sticky => I<style>
+
+If Pane is larger than its requested dimensions, this option may be used to
+position (or stretch) the slave within its cavity. I<Style> is a string that
+contains zero or more of the characters n, s, e or w. The string can optionally
+contains spaces or commas, but they are ignored. Each letter refers to a side
+(north, south, east, or west) that the slave will "stick" to. If both n and s
+(or e and w) are specified, the slave will be stretched to fill the entire
+height (or width) of its cavity. 
+
+=back
+
+=head1 METHODS
+
+=over 4
+
+=item see ( I<widget, ?options?> )
+
+Adjusts the view so that I<widget> is visable. Aditional parameters in
+I<options-value> pairs can be passed, each I<option-value> pair must be
+one of the following
+
+=over 2
+
+=item -anchor => I<anchor>
+
+Specifies how to make the widget visable. If not given then as much of
+the widget as possible is made visable.
+
+Possible values are B<n>, B<s>, B<w>, B<e>, B<nw>, B<ne>, B<sw> and B<se>.
+This will cause an edge on the widget to be aligned with the corresponding
+edge on the pane. for example B<nw> will cause the top left of the widget
+to be placed at the top left of the pane. B<s> will cause the bottom of the
+widget to be placed at the bottom of the pane, and as much of the widget
+as possible made visable in the x direction.
+
+=back
+
+=item xview
+
+Returns a list containing two elements, both of which are real fractions
+between 0 and 1. The first element gives the position of  the left of the
+window, relative to the Pane as a whole (0.5 means it is halfway through the
+Pane, for example). The second element gives the position of the right of the
+window, relative to the Pane as a whole.
+
+=item xview widget
+
+Adjusts the view in the window so that I<widget> is displayed at the left of
+the window. 
+
+=item xview ( moveto => fraction )
+
+Adjusts the view in the window so that I<fraction> of the total width of the
+Pane is off-screen to the left. fraction must be a fraction between 0 and 1.
+
+=item xview ( scroll => number, what )
+
+This command shifts the view in the window left or right according to I<number>
+and I<what>. I<Number> must be an integer. I<What> must be either B<units> or
+B<pages> or an abbreviation of one of these. If I<what> is B<units>, the view
+adjusts left or right by I<number>*10 screen units on the display; if it is
+B<pages> then the view adjusts by number screenfuls. If number is negative then
+widgets farther to the left become visible; if it is positive then widgets
+farther to the right become visible. 
+
+=item yview
+
+Returns a list containing two elements, both of which are real fractions
+between 0 and 1. The first element gives the position of  the top of the
+window, relative to the Pane as a whole (0.5 means it is halfway through the
+Pane, for example). The second element gives the position of the bottom of the
+window, relative to the Pane as a whole.
+
+=item yview widget
+
+Adjusts the view in the window so that I<widget> is displayed at the top of the
+window. 
+
+=item yview ( moveto => fraction )
+
+Adjusts the view in the window so that I<fraction> of the total width of the
+Pane is off-screen to the top. fraction must be a fraction between 0 and 1.
+
+=item yview ( scroll => number, what )
+
+This command shifts the view in the window up or down according to I<number>
+and I<what>. I<Number> must be an integer. I<What> must be either B<units> or
+B<pages> or an abbreviation of one of these. If I<what> is B<units>, the view
+adjusts up or down by I<number>*10 screen units on the display; if it is
+B<pages> then the view adjusts by number screenfuls. If number is negative then
+widgets farther up become visible; if it is positive then widgets farther down
+become visible. 
+
+=back
 
 =head1 AUTHOR
 
-Graham Barr E<lt>F<gbarr@ti.com>E<gt>
+Graham Barr E<lt>F<gbarr@pobox.com>E<gt>
 
 =head1 COPYRIGHT
 

@@ -5,15 +5,9 @@ use strict;
 use vars qw(@ISA $VERSION);
 
 @ISA = qw(Tk::Derived Tk::Frame);
-$VERSION = "0.01";
+$VERSION = "0.02";
 
 Construct Tk::Widget "IFrame";
-
-sub Tk::Widget::userInfo {
-    my $w = shift;
-    my $p = shift || caller;
-    $w->{$p} ||= {};
-}
 
 sub Populate {
     my($frame,$args) = @_;
@@ -45,7 +39,7 @@ sub Populate {
     $frame->bind('<Map>', [
 	sub {
 	    my $f = shift;
-	    my $info = $f->userInfo;
+	    my $info = $f->privateData;
 	    my $tags;
 
 	    return
@@ -55,7 +49,7 @@ sub Populate {
 	},
     ]);
 
-    $frame->userInfo->{'tags'} = [];
+    $frame->privateData->{'tags'} = [];
 
     $frame;
 }
@@ -70,7 +64,7 @@ sub adjustLayout {
     my $f = shift;
     $f->{'layout_pending'} = 0;
 
-    my $info = $f->userInfo;
+    my $info = $f->privateData;
     my $tags = $info->{'tags'};
 
     return unless $tags;
@@ -85,7 +79,7 @@ sub adjustLayout {
     foreach $t (@$tags) {
 	$t->update;
 
-	my $cardinfo = $t->userInfo;
+	my $cardinfo = $t->privateData;
 	my($lbl,$row) =($cardinfo->{label},$cardinfo->{row});
 	my ($rw,$rh) = ($t->ReqWidth, $t->ReqHeight);
 
@@ -126,7 +120,7 @@ sub adjustLayout {
     my $x = $bw;
 
     foreach $t (@$tags) {
-	my $inf = $t->userInfo;
+	my $inf = $t->privateData;
 	$inf->{tag}->place(
 		'-x' => $x,
 		'-y' => $bw,
@@ -165,7 +159,7 @@ sub selectCard {
     $page = $cntr->Subwidget(lc $page)
 	unless ref($page);
 
-    my $info = $f->userInfo;
+    my $info = $f->privateData;
     my $cur = $info->{'current'};
 
     return
@@ -176,7 +170,7 @@ sub selectCard {
     my $bw = $f->{Configure}{'-borderwidth'};
 
     foreach $con ($cntr->Subwidget) {
-	my $cardinfo = $con->userInfo;
+	my $cardinfo = $con->privateData;
 	if($con == $page) {
 	    my %info = $cardinfo->{'tag'}->placeInfo;
 	    $info{'-x'} -= $bw;
@@ -251,13 +245,13 @@ sub addCard {
 	}
     ]);
 
-    my $info = $cf->userInfo;
+    my $info = $cf->privateData;
 
     $info->{label} = $l;
     $info->{tag} = $tf;
     $info->{row} = $row;
 
-    push(@{$f->userInfo->{'tags'}}, $cf);
+    push(@{$f->privateData->{'tags'}}, $cf);
 
     $cf->place(
 	-relwidth  => 1.0,

@@ -1,0 +1,75 @@
+*** Release 1.03
+
+Wed Dec 10 1997 <gbarr@pobox.com> (Graham Barr)
+
+	Tk::NumEntry
+	- changed -repeat* ConfigSpecs to [$binc,$bdec]
+	
+	Tk::NumEntryPlain
+	- Removed -repeat* ConfigSpecs
+	- Added -defaultvalue ConfigSpec for when the entry contains no text
+	
+	examples/numentry, examples/numentryplain
+	- Updated to use -defaultvalue
+
+Wed Dec 10 1997 <gbarr@pobox.com> (Graham Barr)
+
+	Tk::Pane
+	- Fixed 'Use of uninitialized' warnings
+	
+	Tk::ListMgr
+	- Renamed Tk::ListItem to be Tk::ListMgr::Item
+	
+	Tk::MenuEntry
+	- Changed to use DefineBitmap
+	
+	Tk::IFrame
+	- Changed userInfo to privateData
+	
+	Tk::Cloth
+	- Several bug fixes
+	
+	Tk::TFrame
+	- Fix bug of not mapping widows if container frame was empty
+	
+	Added
+	- examples/firebutton
+	- examples/numentryplain
+	- Tk::FireButton
+	- Tk::NumEntryPlain
+	- tests
+
+Tue Dec  9 1997 <gbarr@pobox.com> (Graham Barr)
+
+	Tk::TFrame
+	- Changed from using place to being a geom manager. This allows TFrame
+	  to see GeometryRequests from it's children.
+
+Tue Nov  4 1997 <gbarr@pobox.com> (Graham Barr)
+
+	Tk::Pane
+	- Added see method
+	
+	Tk::Cloth
+	- Several bugfixes
+	
+	examples/pane2
+	- new example
+
+Mon Sep 15 1997 <gbarr@pobox.com> (Graham Barr)
+
+	-w cleanups
+
+	Achim's patch
+
+*** Release 1.02
+
+  - Fixed all widgets to they are -w and use strict clean
+  - Now all widgets have a $VERSION
+  - Changes to Makefile.PL to ensure clean install
+  - Added alpha directory
+
+*** Release 1.01
+
+  - Added Tk::NumEntry
+  - Added Tk::ProgressBar

@@ -21,7 +21,7 @@ WriteMakefile(
 	PREREQ_PM => { 'Tk' => '402.002' }, # Tk/NumEntry need it
 	NAME	=> 'Tk',
 	DISTNAME => 'Tk-GBARR',
-	VERSION	=> "1.02",
+	VERSION	=> "1.03",
 	'dist'	=> {
 			COMPRESS 	=> 'gzip -9f',
 			SUFFIX   	=> '.gz', 

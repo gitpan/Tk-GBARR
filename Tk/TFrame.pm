@@ -5,9 +5,16 @@ use strict;
 use vars qw($VERSION @ISA);
 
 @ISA = qw(Tk::Frame);
-$VERSION = "1.00";
+$VERSION = "1.01";
 
 Construct Tk::Widget "TFrame";
+
+sub ClassInit {
+    my ($class,$mw) = @_;
+    $mw->bind($class,'<Configure>',['layoutRequest']);
+    $mw->bind($class,'<FocusIn>',  'NoOp');
+    return $class;
+}
 
 sub Populate {
     my($frame,$args) = @_;
@@ -32,38 +39,10 @@ sub Populate {
 
     my $label     = $frame->Component(Label => "label",@label);
 
-    my $container = $frame->Component(Frame => "container");
+    my $container = $frame->Component(Frame => "container", -borderwidth => 0);
 
-    my $rh = $label->ReqHeight;
 
-    my $px = $args->{'-ipadx'} || 0;
-    my $py = $args->{'-ipady'} || 0;
-
-    $border->place(
-	-relwidth => 1.0,
-	-relheight => 1.0,
-	-height => -int($rh / 2),
-       '-y' => int($rh / 2)
-    );
-
-    $container->place(
-	-in => $border,
-       '-x' => $px,
-	-width => -2 * $px,
-	-relwidth => 1.0,
-
-       '-y' => int($rh / 2) + $py,
-	-height => -int($rh / 2) - $py*2,
-	-relheight => 1.0,
-    );
-
-    $label->place(
-       '-x' => 10, '-y' => 0
-    );
-
-    $frame->bind('<Configure>', [\&layoutRequest, $frame]);
-
-    layoutRequest($frame,$frame);
+    $frame->DoWhenIdle(['Manage',$frame]);
 
     $frame->Default("container" => $container);
 
@@ -87,29 +66,73 @@ sub label {
 }
 
 sub layoutRequest {
-    my($w,$f) = @_;
+    my($f) = @_;
     $f->DoWhenIdle(['adjustLayout',$f]) unless $f->{'layout_pending'};
     $f->{'layout_pending'} = 1;
 }
 
-sub adjustLayout {
+sub SlaveGeometryRequest {
+    my ($m,$s) = @_;
+    $m->DoWhenIdle(['_SlaveGeometryRequest',$m]) unless $m->{'geom_pending'};
+    $m->{'geom_pending'} = 1;
+}
+
+sub Manage {
     my $f = shift;
     my $l = $f->Subwidget('label');
     my $c = $f->Subwidget('container');
     my $b = $f->Subwidget('border');
 
-    $c->update;
-    $f->{'layout_pending'} = 0;
+    $f->ManageGeometry($l);
+    $l->MapWindow;
+    $f->ManageGeometry($c);
+    $c->MapWindow;
+    $f->ManageGeometry($b);
+    $b->MapWindow;
+    SlaveGeometryRequest($f,$l);
+}
+
+sub _SlaveGeometryRequest {
+    my $f = shift;
+    my $l = $f->Subwidget('label');
+    my $c = $f->Subwidget('container');
+    my $b = $f->Subwidget('border');
+
+    $f->{'geom_pending'} = 0;
 
     my $px = $f->{Configure}{'-ipadx'} || 0;
     my $py = $f->{Configure}{'-ipady'} || 0;
 
     my $bw = $b->cget('-borderwidth')*2;
     my $w  = $c->ReqWidth + $bw + $px*2;
-    my $h  = $bw + $l->ReqHeight + $c->ReqHeight + $f->cget('-borderwidth')*2
+    my $w2 = $l->ReqWidth + 20 + $bw;
+    my $h  = $bw + $l->ReqHeight + $c->ReqHeight #+ $f->cget('-borderwidth')*2
 		+ $py*2;
 
-    $f->GeometryRequest($w,$h);
+    $f->GeometryRequest($w > $w2 ? $w : $w2,$h);
+}
+
+sub adjustLayout {
+    my $frame = shift;
+    my $label = $frame->Subwidget('label');
+    my $container = $frame->Subwidget('container');
+    my $border = $frame->Subwidget('border');
+
+    $frame->{'layout_pending'} = 0;
+    my $rh = $label->ReqHeight;
+
+    my $px = $frame->{Configure}{'-ipadx'} || 0;
+    my $bw = $frame->{Configure}{'-borderwidth'} || 0;
+    my $py = $frame->{Configure}{'-ipady'} || 0;
+    my $W = $frame->Width;
+    my $H = $frame->Height;
+
+    $border->MoveResizeWindow(0,int($rh/2),$W,$H-int($rh/2));
+
+    $container->MoveResizeWindow(
+	$px+$bw,$rh + $py, $W - (($px+$bw) * 2), $H - $rh -$bw - ($px * 2));
+
+    $label->MoveResizeWindow(10,0,$label->ReqWidth,$label->ReqHeight);
 }
 
 sub grid {

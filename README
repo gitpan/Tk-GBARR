@@ -8,6 +8,8 @@ of Tk Widgets, currently it includes
 	Tk::NumEntry    - An entry widget that accepts numbers and has up/down
 			  buttons for in/decrement.
 
+To use this distribution Tk402.002 or better is required.
+
 The documentation is minimal (or even non-existant) but I was
 requested to release them before my life enters a stage of
 turmoil (I am moving to the US real soon). I will release

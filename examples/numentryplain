@@ -1,16 +1,16 @@
-#!/usr/local/bin/perl
+#!/usr/local/bin/perl -w
 
 use Tk;
-use Tk::NumEntry;
+use Tk::NumEntryPlain;
 use strict;
 
 my $mw = new MainWindow;
 
-my $nume = $mw->NumEntry( -command => sub { print "Value = ",@_,"\n" });
+my $nume = $mw->NumEntryPlain(-command => sub { print "Value = ",@_,"\n" });
 
 $nume->pack(-side => 'top', -fill => 'x');
 
-$nume = $mw->NumEntry(
+$nume = $mw->NumEntryPlain(
 		-minvalue => 10,
 		-maxvalue => 100,
 		-defaultvalue => -2,

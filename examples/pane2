@@ -1,0 +1,211 @@
+#!perl5 -w
+
+#
+# Example donated by Joerg-Stefan Ralf <jralf@micro.ti.com>
+#
+
+use Tk;
+use Tk::Pane;
+
+sub INIT
+{
+    $anchor_var = 'nw';
+    @list = (':I\'m Label 1:L',
+	     ':I\'m Label 2:L',
+	     'jump to 1st Header:I\'m Header 1:H:::w',
+	     'a:I\'m Radiobutton 1:R:v1=1,v2=2,v3=3,v4=4,v5=5,v6=6,v7=7:1',
+	     'b:I\'m Radiobutton 1-1:R:v1=1,v2=2,v3=3,v4=4,v5=5,v6=6,v7=7:7',
+	     'c:I\'m Radiobutton 1-2:R:v1=1,v2=2,v3=3,v4=4,v5=5,v6=6,v7=7:6',
+	     ':I\'m Label 3:L',
+	     ':I\'m Label 3.1:L',
+	     ':I\'m Label 3.2:L',
+	     ':I\'m Label 3.3:L',
+	     ':I\'m Label 3.4:L',
+	     ':I\'m Label 3.5:L',
+	     ':I\'m Label 3.6:L',
+	     ':I\'m Label 4:L',
+	     ':I\'m Label 5:L',
+	     'jump to 2st Header:I\'m Header 2:H:::e',
+	     ':I\'m Label 6:L',
+	     ':I\'m Label 6.1:L',
+	     ':I\'m Label 6.2:L',
+	     ':I\'m Label 6.3:L',
+	     ':I\'m Label 6.4:L',
+	     ':I\'m Label 6.5:L',
+	     ':I\'m Entry 1:E',
+	     ':I\'m Label 7:L',
+	     ':I\'m Label 7.1:L',
+	     ':I\'m Label 7.2:L',
+	     'jump to 3st Header:I\'m Header 3:H:::center',
+	     'd:I\'m Radiobutton 2:R:v1=1,v2=2,v3=3,v4=4,v5=5,v6=6,v7=7:2',
+	     ':I\'m Entry 2:L',
+	     ':I\'m Label 8:L',
+	     ':I\'m Label 8.1:L',
+	     ':I\'m Label 8.2:L',
+	     ':I\'m Label 8.3:L',
+	     ':I\'m Label 8.4:L',
+	     'jump to 4st Header:I\'m Header 4:H:::w',
+	     'e:I\'m Radiobutton 3:R:v1=1,v2=2,v3=3,v4=4,v5=5,v6=6,v7=7:3',
+	     ':I\'m Label 9:L',
+	     ':I\'m Label 9.1:L',
+	     ':I\'m Label 9.2:L',
+	     ':I\'m Label 9.3:L',
+	     ':I\'m Label 9.4:L',
+	     ':I\'m Label 9.5:L',
+	     ':I\'m Label 9.6:L',
+	     ':I\'m Label 9.7:L'
+	     );
+}
+
+sub CREATE_WIDGs
+{    
+    sub Sunk_Frame
+    {
+	return $SFrame -> Frame (-relief => 'sunken',
+				 -borderwidth => 4,
+				 )->pack(-expand => 1,
+					 -fill   => 'x');
+    }
+
+    foreach $w (@list)
+    {
+	my ($ident,$name,$widgtype,$radiob,$radiod,$header_anchor) = split (/:/,$w);
+
+	if ($widgtype eq 'H')
+	{
+	    my $tag =$SFrame -> Label (-text => " $name", 
+				       -width => 20            # to explain -anchor ne or se
+				       ) -> pack (-anchor => $header_anchor);
+	    $Frame_top -> Button (-text => "$ident",
+				  -command => sub {$SFrame -> see($tag,
+								   -anchor => "$anchor_var")}
+				  ) -> pack ();
+	    $SunkFrame = Sunk_Frame;
+	}
+	else
+	{
+            $SunkFrame = Sunk_Frame if (not defined $SunkFrame);
+
+	    $SFrame2 = $SunkFrame -> Frame() -> pack(-anchor  => 'w');
+
+	    if ($widgtype eq 'E')
+	    {
+		$hashev{$ident} = "";
+		$hashe{$ident} = $SFrame2 -> Entry (-textvariable => \$hashev{$ident},
+						     -width => 60) -> pack (-side => 'left');
+	    }
+	    elsif ($widgtype eq 'L')
+	    {
+		$SFrame2 -> Label (-text => " $name") -> pack (-anchor  => 'w');
+	    }
+	    else
+	    {
+		my($x_i) = 170;
+		my(@ii) = split (/,/,$radiob);
+		foreach $i (@ii)
+		{
+		    ($vname,$value) = split (/=/,$i);
+		    $hashe{"$ident.$vname"} = $SFrame2 -> Radiobutton (-text => "$vname",
+									-variable => \$hashev{"$ident"},
+									-value    => "$value") -> pack (-side => 'left');
+		}
+		$hashev{"$ident"} = $radiod;
+	    }
+	}
+    }
+}
+
+main:
+{
+    &INIT;
+   
+    $top = MainWindow -> new ();
+
+    $Frame_top = $top -> Frame (-relief => 'raised',
+				-borderwidth => 5); 
+
+# Radionbutton to select anchor
+    $Frame_anchor = $top -> Frame ();
+    $Frame_anchor1 =  $Frame_anchor -> Frame ();
+    $Frame_anchor2 =  $Frame_anchor -> Frame ();
+    $Frame_anchor3 =  $Frame_anchor -> Frame ();
+
+    $Frame_anchor1 -> Radiobutton (-text     => "nw",
+				   -variable => \$anchor_var,
+				   -width    => 3,
+				   -value    => "nw") -> pack (-side => 'left');
+    $Frame_anchor1 -> Radiobutton (-text     => "n ",
+				   -width    => 3,
+				   -variable => \$anchor_var,
+				   -value    => "n") -> pack (-side => 'left');
+    $Frame_anchor1 -> Radiobutton (-text     => "ne",
+				   -width    => 3,
+				   -variable => \$anchor_var,
+				   -value    => "ne") -> pack (-side => 'left');
+    $Frame_anchor2 -> Radiobutton (-text     => "w ",
+				   -width    => 3,
+				   -variable => \$anchor_var,
+				   -value    => "w") -> pack (-side => 'left');
+    $Frame_anchor2 -> Radiobutton (-text     => "c",
+				   -width    => 3,
+				   -variable => \$anchor_var,
+				   -value    => "center") -> pack (-side => 'left');
+    $Frame_anchor2 -> Radiobutton (-text     => "e ",
+				   -width    => 3,
+				   -variable => \$anchor_var,
+				   -value    => "e") -> pack (-side => 'left');
+    $Frame_anchor3 -> Radiobutton (-text     => "sw",
+				   -width    => 3,
+				   -variable => \$anchor_var,
+				   -value    => "sw") -> pack (-side => 'left');
+    $Frame_anchor3 -> Radiobutton (-text     => "s",
+				   -width    => 3,
+				   -variable => \$anchor_var,
+				   -value    => "s") -> pack (-side => 'left');
+    $Frame_anchor3 -> Radiobutton (-text     => "se",
+				   -width    => 3,
+				   -variable => \$anchor_var,
+				   -value    => "se") -> pack (-side => 'left');
+
+#----- ScrolledFrame --------------------------------------------------------------------
+    $SFrame = $top -> Scrolled('Pane',	
+			       -scrollbars => 'ose',
+			       -sticky => 'we',        # what is this command doing ?
+			       -gridded => 'y');       # what is this command doing ?
+
+#----- Widgets in ScrolledFrame ---------------------------------------------------------
+    &CREATE_WIDGs;
+
+#----- Buttons at the bottom ----------------------------------------------------
+    $frame = $top -> Frame (-relief => 'raised',
+			    -borderwidth => 5);
+    $frame -> Button (-text    => "EXIT",
+		      -command => sub {exit 0},
+		    #  -fill    => 'x'
+		      )->pack(-side => 'right');
+
+#----- pack Widgets -------------------------------------------------------------
+    $Frame_anchor1 ->pack(-side => 'top',
+			 -fill => 'x');
+    $Frame_anchor2 ->pack(-side => 'top',
+			 -fill => 'x');
+    $Frame_anchor3 ->pack(-side => 'top',
+			 -fill => 'x');
+    $top -> Label (-textvariable => \$anchor_var)-> pack();
+    $Frame_anchor ->pack(-side => 'top',
+			 -fill => 'x');
+     $Frame_top->pack(-side => 'top',
+		      -fill => 'x');
+
+    $frame -> pack(-side => 'bottom',
+		   -fill => 'x');
+    $SFrame ->pack(-expand => 1,
+		   -fill => 'both');;
+
+#----- modify window manager ----------------------------------------------------
+    $top -> wm ("title" , "Pane.pm   method  ->see\(\) demo");
+    $top -> wm ("geometry" , "550x500");              # make mainwindow small
+
+#----- start event loop ---------------------------------------------------------
+    MainLoop;
+}

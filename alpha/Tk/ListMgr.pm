@@ -7,7 +7,7 @@ use strict;
 use vars qw(@ISA $VERSION);
 
 @ISA = qw(Tk::Derived Tk::Frame);
-$VERSION = "0.01";
+$VERSION = "0.02";
 
 Construct Tk::Widget 'ListMgr';
 
@@ -790,7 +790,7 @@ sub xview {
 sub yview {
 }
 
-package Tk::ListItem;
+package Tk::ListMgr::Item;
 
 use vars qw(@ISA);
 

@@ -7,9 +7,27 @@ use strict;
 use vars qw(@ISA $VERSION);
 
 @ISA = qw(Tk::Derived Tk::Frame);
-$VERSION = "0.01";
+$VERSION = "0.02";
 
 Construct Tk::Widget 'MenuEntry';
+
+my $BITMAP;
+
+sub ClassInit {
+    my($class,$mw) = @_;
+
+    unless(defined($BITMAP)) {
+	$BITMAP = __PACKAGE__ . "::downarrow";
+
+	my $bits = pack("b12"x5,".1111111111.",
+				"..11111111..",
+				"...111111...",
+				"....1111....",
+				".....11.....");
+
+	$mw->DefineBitmap($BITMAP => 12,5, $bits);
+    }
+}
 
 sub Populate {
     my($me,$args) = @_;
@@ -18,17 +36,8 @@ sub Populate {
 
     my $sf = $me->Frame;
 
-    my $bm = $me->Bitmap(
-	-data => "#define _width 12
-		  #define _height 5
-		  static unsigned char _bits[] = {
-		   0xfe, 0x07, 0xfc, 0x03, 0xf8,
-		   0x01, 0xf0, 0x00, 0x60, 0x00};
-		 ",
-    );
-
     my $b = $sf->Button(
-	-image => $bm,
+	-bitmap => $BITMAP,
 	-anchor => 'center',
 	-highlightthickness => 0,
     )->pack(-fill => 'both', -expand => 1);

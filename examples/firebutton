@@ -1,0 +1,12 @@
+use Tk;
+use Tk::FireButton;
+
+my $i = 0;
+
+my $mw = MainWindow->new();
+my $fb = $mw->FireButton(
+		-text=>'Fire',
+		-command=>sub{$i++; print "fire $i\n"}
+		)->pack;
+
+MainLoop;
