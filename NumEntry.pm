@@ -1,4 +1,4 @@
-# $Id: NumEntry.pm,v 2.2 2000/10/22 17:58:05 eserte Exp $
+# $Id: NumEntry.pm,v 2.3 2001/08/08 09:06:38 eserte Exp $
 
 package Tk::NumEntry;
 
@@ -9,7 +9,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Frame);
-$VERSION = sprintf("%d.%02d", q$Revision: 2.2 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 2.3 $ =~ /(\d+)\.(\d+)/);
 
 Construct Tk::Widget 'NumEntry';
 
@@ -25,10 +25,15 @@ sub Populate {
 
     my $orient = delete $args->{-orient} || "vertical";
 
+    my $readonly = delete $args->{-readonly};
+
     my $e = $f->Component( $f->NumEntryPlainWidget => 'entry',
         -borderwidth        => 0,
         -highlightthickness => 0,
     );
+    if ($readonly) {
+	$e->bindtags([]);
+    }
 
     my $binc = $f->Component( $f->IncFireButtonWidget() => 'inc',
 	-command	    => sub { $e->incdec($e->cget(-increment)) },
@@ -150,7 +155,7 @@ NumEntry supports:
 B<-orient> B<-repeatdelay> B<-repeatinterval>
 
 The B<-orient> option specifies the packing order of the increment and
-decrement buttons.
+decrement buttons. This option can only be set at creation time.
 
 =head1 WIDGET-SPECIFIC OPTIONS
 
@@ -166,6 +171,15 @@ decrement buttons.
 
 Boolean that defines if the inc and dec buttons are visible.
 
+
+=item Switch:           B<-readonly>
+
+=item Fallback:		B<0>
+
+If B<-readonly> is set to a true value, then the value can only be
+changed by pressing the increment/decrement buttons. This option can
+only be set at creation time.
+
 =back
 
 =head1 WIDGET METHODS
@@ -180,7 +194,7 @@ or DecFireButtonWidget are not defined.
 
 Graham Barr <F<gbarr@pobox.com>>
 
-Current maintainer is Slaven Rezic <F<eserte@cs.tu-berlin.de>>.
+Current maintainer is Slaven Rezic <F<slaven.rezic@berlin.de>>.
 
 =head1 ACKNOWLEDGEMENTS
 

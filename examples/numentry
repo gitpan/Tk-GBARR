@@ -19,5 +19,11 @@ $nume = $mw->NumEntry(
 
 $nume->pack(-side => 'top', -fill => 'x');
 
+$nume = $mw->NumEntry(
+		-readonly => 1,
+);
+
+$nume->pack(-side => 'top', -fill => 'x');
+
 Tk::MainLoop;
 __END__

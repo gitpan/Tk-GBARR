@@ -1,3 +1,9 @@
+*** Release 2.05
+  - added -readonly option to NumEntry
+
+*** Release 2.04
+  - warning fix in NumEntryPlain (thanks to John Coers)
+
 *** Release 2.03
 
   - NumEntry uses NumEntryPlain's -increment value

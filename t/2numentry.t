@@ -1,6 +1,6 @@
 use strict;
 use vars '$loaded';
-BEGIN { $^W= 1; $| = 1; print "1..6\n"; }
+BEGIN { $^W= 1; $| = 1; print "1..7\n"; }
 END {print "not ok 1\n" unless $loaded;}
 use Tk::NumEntry;
 $loaded = 1;
@@ -27,5 +27,11 @@ if ($ne->cget(-value) != 2) { print "not " } print "ok " . $ok++ . "\n";
 
 $ne->incdec(-1);
 if ($ne->cget(-value) != 1) { print "not " } print "ok " . $ok++ . "\n";
+
+{
+    my $ne2 = $top->NumEntry(-readonly => 1);
+    if (!$ne2->isa("Tk::NumEntry")) { print "not " }
+    print "ok " . $ok++ . "\n";
+}
 
 #Tk::MainLoop;

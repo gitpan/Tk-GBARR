@@ -1,4 +1,4 @@
-# $Id: NumEntryPlain.pm,v 1.5 2000/10/22 17:12:09 eserte Exp $
+# $Id: NumEntryPlain.pm,v 1.7 2001/08/08 09:06:44 eserte Exp $
 
 package Tk::NumEntryPlain;
 
@@ -9,7 +9,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Entry);
-$VERSION = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 1.7 $ =~ /(\d+)\.(\d+)/);
 
 Construct Tk::Widget 'NumEntryPlain';
 
@@ -164,6 +164,7 @@ sub incdec {
         my $min = $e->{Configure}{'-minvalue'};
         my $max = $e->{Configure}{'-maxvalue'};
 
+	$val = 0 if !$val;
         $val += $inc;
         my $limit = undef;
 
@@ -281,7 +282,7 @@ The code was extracted from B<Tk::NumEntry> and slightly modified
 by Achim Bohnet E<lt>ach@mpe.mpg.deE<gt>.  B<Tk::NumEntry>'s author
 is Graham Barr E<lt>gbarr@pobox.comE<gt>.
 
-Current maintainer is Slaven Rezic E<lt>eserte@cs.tu-berlin.deE<gt>.
+Current maintainer is Slaven Rezic E<lt>slaven.rezic@berlin.deE<gt>.
 
 =head1 COPYRIGHT
 
