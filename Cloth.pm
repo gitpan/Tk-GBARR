@@ -8,12 +8,14 @@
 ## Base class for the creation of all cloth objects
 ##
 
+## $Id: Cloth.pm,v 2.1 2000/10/22 17:10:13 eserte Exp $
+
 package Tk::Cloth;
 
 use strict;
 use vars qw($VERSION);
 
-$VERSION = "1.03";
+$VERSION = sprintf("%d.%02d", q$Revision: 2.1 $ =~ /(\d+)\.(\d+)/);
 
 package Tk::Cloth::Object;
 

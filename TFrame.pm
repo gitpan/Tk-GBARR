@@ -1,3 +1,5 @@
+# $Id: TFrame.pm,v 2.1 2000/10/22 17:12:40 eserte Exp $
+
 package Tk::TFrame;
 
 use Tk;
@@ -5,7 +7,7 @@ use strict;
 use vars qw($VERSION @ISA);
 
 @ISA = qw(Tk::Derived Tk::Frame);
-$VERSION = "1.03";
+$VERSION = sprintf("%d.%02d", q$Revision: 2.1 $ =~ /(\d+)\.(\d+)/);
 
 Construct Tk::Widget "TFrame";
 

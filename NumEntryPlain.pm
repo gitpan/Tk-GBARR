@@ -1,3 +1,4 @@
+# $Id: NumEntryPlain.pm,v 1.5 2000/10/22 17:12:09 eserte Exp $
 
 package Tk::NumEntryPlain;
 
@@ -8,7 +9,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Entry);
-$VERSION = "0.09";
+$VERSION = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
 
 Construct Tk::Widget 'NumEntryPlain';
 

@@ -1,3 +1,4 @@
+# $Id: NumEntry.pm,v 2.2 2000/10/22 17:58:05 eserte Exp $
 
 package Tk::NumEntry;
 
@@ -8,7 +9,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Frame);
-$VERSION = '1.08';
+$VERSION = sprintf("%d.%02d", q$Revision: 2.2 $ =~ /(\d+)\.(\d+)/);
 
 Construct Tk::Widget 'NumEntry';
 
@@ -30,7 +31,7 @@ sub Populate {
     );
 
     my $binc = $f->Component( $f->IncFireButtonWidget() => 'inc',
-	-command	    => sub { $e->incdec(1) },
+	-command	    => sub { $e->incdec($e->cget(-increment)) },
 	-takefocus	    => 0,
 	-highlightthickness => 0,
 	-anchor             => 'center',
@@ -42,7 +43,7 @@ sub Populate {
 		    );
 
     my $bdec = $f->Component( $f->DecFireButtonWidget() => 'dec',
-	-command	    => sub { $e->incdec(-1) },
+	-command	    => sub { $e->incdec(- $e->cget(-increment)) },
 	-takefocus	    => 0,
 	-highlightthickness => 0,
 	-anchor             => 'center',

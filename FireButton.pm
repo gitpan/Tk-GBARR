@@ -1,4 +1,5 @@
 # POD after __END__
+# $Id: FireButton.pm,v 1.3 2000/10/22 17:11:10 eserte Exp $
 
 package Tk::FireButton;
 
@@ -9,7 +10,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Button);
-$VERSION = '0.06';
+$VERSION = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
 
 Construct Tk::Widget 'FireButton';
 

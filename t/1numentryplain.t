@@ -16,7 +16,7 @@ BEGIN
 use strict;
 use Tk;
 
-BEGIN { plan tests => 8 };
+BEGIN { plan tests => 10 };
 
 my $mw = Tk::MainWindow->new;
 
@@ -45,6 +45,15 @@ my $nep;
 
     eval { $e->update; };
     ok($@, "", 'Problem in update after setting value');
+}
+
+##
+## Check -increment and -bigincrement options
+{
+    my $e = $mw->NumEntryPlain(-increment    => 0.1,
+			       -bigincrement => 50);
+    ok($e->cget(-increment), 0.1);
+    ok($e->cget(-bigincrement), 50);
 }
 
 1;
