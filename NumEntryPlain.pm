@@ -22,25 +22,18 @@ sub ClassInit {
     $mw->bind($class,'<Return>', 'Return');
     $mw->bind($class,'<Up>', 'Up');
     $mw->bind($class,'<Down>', 'Down');
+    $mw->bind($class,'<Home>', 'Home');
+    $mw->bind($class,'<End>', 'End');
+    $mw->bind($class,'<Prior>', 'Prior');
+    $mw->bind($class,'<Next>', 'Next');
 }
 
 
 ## Bindings callbacks
 
-sub _parent {
-    my $e = shift;
-
-    my $parent = $e->cget(-parent);
-    if (!defined $parent) {
-	$e;
-    } else {
-	$parent;
-    }
-}
-
 sub Leave {
     my $e = shift;
-    $e->_parent->incdec(0);  # range check
+    $e->incdec(0);  # range check
 }
 
 sub Return {
@@ -48,30 +41,55 @@ sub Return {
 
     my $v = $e->value; # range check
 
-    $e->_parent->Callback(-command => $v);
+    $e->Callback(-command => $v);
 }
 
 sub Up {
     my $e = shift;
-    $e->_parent->incdec(1,'initial');
+    $e->incdec($e->cget(-increment));
 }
 
 sub Down {
     my $e = shift;
-    $e->_parent->incdec(-1,'initial');
+    $e->incdec(-$e->cget(-increment));
+}
+
+sub Prior {
+    my $e = shift;
+    $e->incdec($e->cget(-bigincrement) || 1);
+}
+
+sub Next {
+    my $e = shift;
+    $e->incdec(-($e->cget(-bigincrement) || 1));
 }
 
 sub Insert {
     my($e,$c) = @_;
 
-    if($c =~ /^[-0-9]$/) {
-	$e->_parent->SUPER::Insert($c);
+    my $dot = ($e->cget(-increment) =~ /\./ ? '.' : '');
+
+    if($c =~ /^[-0-9$dot]$/) {
+	$e->SUPER::Insert($c);
     }
     elsif(defined($c) && length($c)) {
-	$e->_parent->_ringBell;
+	$e->_ringBell;
     }
 }
 
+sub Home {
+    my $e = shift;
+    my $min_val = $e->cget(-minvalue);
+    return unless defined $min_val;
+    $e->value($min_val);
+}
+
+sub End {
+    my $e = shift;
+    my $max_val = $e->cget(-maxvalue);
+    return unless defined $max_val;
+    $e->value($max_val);
+}
 
 ## Widget constructor
 
@@ -89,7 +107,8 @@ sub Populate {
         -minvalue    => [PASSIVE  => undef,         undef,         undef     ],
         -bell        => [PASSIVE  => "bell",        "Bell",        1         ],
         -command     => [CALLBACK => undef,         undef,         undef     ],
-        -parent      => [PASSIVE  => undef,         undef,         undef     ],
+        -increment    => [PASSIVE => undef,         undef,         1         ],
+        -bigincrement => [PASSIVE => undef,         undef,         undef     ],
     );
 
 }
@@ -258,8 +277,10 @@ L<Tk::Entry|Tk::Entry>
 =head1 HISTORY
 
 The code was extracted from B<Tk::NumEntry> and slightly modified
-by Achim Bohnet E<gt>ach@mpe.mpg.deE<gt>.  B<Tk::NumEntry>'s author
-is Graham Barr E<gt>gbarr@pobox.comE<gt>.
+by Achim Bohnet E<lt>ach@mpe.mpg.deE<gt>.  B<Tk::NumEntry>'s author
+is Graham Barr E<lt>gbarr@pobox.comE<gt>.
+
+Current maintainer is Slaven Rezic E<lt>eserte@cs.tu-berlin.deE<gt>.
 
 =head1 COPYRIGHT
 

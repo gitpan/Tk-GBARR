@@ -9,7 +9,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Button);
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 Construct Tk::Widget 'FireButton';
 
@@ -106,6 +106,11 @@ sub Populate {
     $b;
 }
 
+sub INCBITMAP      { $INCBITMAP      }
+sub HORIZINCBITMAP { $HORIZINCBITMAP }
+sub DECBITMAP      { $DECBITMAP      }
+sub HORIZDECBITMAP { $HORIZDECBITMAP }
+
 1;
 
 __END__
@@ -137,7 +142,7 @@ is pressed.
 Four suitable bitmaps are predefined in this package: $INCBITMAP and
 $DECBITMAP for vertical increment and decrement buttons, and
 $HORIZINCBITMAP and $HORIZDECBITMAP for horizontal increment and
-decrement buttons.
+decrement buttons. See below for methods accessing these bitmaps.
 
 
 =head1 SUPER-CLASS
@@ -196,6 +201,12 @@ from the B<Button> widget:
 
 Same as for L<Button|Tk::Button> widget.
 
+Additionally, there are four methods returning the names of the
+standard increment and decrement bitmaps: INCBITMAP, HORIZINCBITMAP,
+DECBITMAP, and HORIZDECBITMAP.
+
+Subclasses of FireButton may override these methods to supply
+different increment and decrement bitmaps.
 
 =head1 ADVERTISED WIDGETS
 
@@ -206,7 +217,8 @@ None.
 
 The code was extracted from Tk::NumEntry and slightly modified
 by Achim Bohnet E<gt>ach@mpe.mpg.deE<gt>.  Tk::NumEntry's author
-is Graham Barr E<gt>gbarr@pobox.comE<gt>.
+is Graham Barr E<gt>gbarr@pobox.comE<gt>. The current maintainer is
+Slaven Rezic E<gt>eserte@cs.tu-berlin.deE<gt>.
 
 =cut
 

@@ -8,7 +8,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Frame);
-$VERSION = '1.06';
+$VERSION = '1.08';
 
 Construct Tk::Widget 'NumEntry';
 
@@ -24,35 +24,34 @@ sub Populate {
 
     my $orient = delete $args->{-orient} || "vertical";
 
-    my $e = $f->Component( NumEntryPlain => 'entry',
+    my $e = $f->Component( $f->NumEntryPlainWidget => 'entry',
         -borderwidth        => 0,
         -highlightthickness => 0,
-	-parent             => $f,
     );
 
-    my $binc = $f->Component( FireButton => 'inc',
-	-bitmap		    => ($orient =~ /^vert/
-				? $Tk::FireButton::INCBITMAP
-				: $Tk::FireButton::HORIZINCBITMAP
-			       ),
-#	-command	    => sub { $e->incdec(1) },
-	-command	    => sub { $f->incdec(1) },
+    my $binc = $f->Component( $f->IncFireButtonWidget() => 'inc',
+	-command	    => sub { $e->incdec(1) },
 	-takefocus	    => 0,
 	-highlightthickness => 0,
 	-anchor             => 'center',
     );
+    $binc->configure(-bitmap => ($orient =~ /^vert/
+				 ? $binc->INCBITMAP
+				 : $binc->HORIZINCBITMAP
+				)
+		    );
 
-    my $bdec = $f->Component( FireButton => 'dec',
-	-bitmap		    => ($orient =~ /^vert/
-				? $Tk::FireButton::DECBITMAP
-				: $Tk::FireButton::HORIZDECBITMAP
-			       ),
-#	-command	    => sub { $e->incdec(-1) },
-	-command	    => sub { $f->incdec(-1) },
+    my $bdec = $f->Component( $f->DecFireButtonWidget() => 'dec',
+	-command	    => sub { $e->incdec(-1) },
 	-takefocus	    => 0,
 	-highlightthickness => 0,
 	-anchor             => 'center',
     );
+    $bdec->configure(-bitmap => ($orient =~ /^vert/
+				 ? $bdec->DECBITMAP
+				 : $bdec->HORIZDECBITMAP
+				)
+		    );
 
     $f->gridColumnconfigure(0, -weight => 1);
     $f->gridColumnconfigure(1, -weight => 0);
@@ -95,6 +94,11 @@ sub Populate {
 
     $f;
 }
+
+sub NumEntryPlainWidget { "NumEntryPlain"         }
+sub FireButtonWidget    { "FireButton"            }
+sub IncFireButtonWidget { shift->FireButtonWidget }
+sub DecFireButtonWidget { shift->FireButtonWidget }
 
 sub buttons {
     my $f = shift;
@@ -139,10 +143,13 @@ following options
 
 =head1 STANDARD OPTIONS
 
-Besides the standard options of the L<Button|Tk::Button> widget
+Besides the standard options of the L<Entry|Tk::Entry> widget
 NumEntry supports:
 
 B<-orient> B<-repeatdelay> B<-repeatinterval>
+
+The B<-orient> option specifies the packing order of the increment and
+decrement buttons.
 
 =head1 WIDGET-SPECIFIC OPTIONS
 
@@ -160,11 +167,19 @@ Boolean that defines if the inc and dec buttons are visible.
 
 =back
 
+=head1 WIDGET METHODS
+
+Subclasses of NumEntry may override the following methods to use
+different widgets for the composition of the NumEntry. These are:
+NumEntryPlainWidget, FireButtonWidget, IncFireButtonWidget and
+DecFireButtonWidget. FireButtonWidget is used if IncFireButtonWidget
+or DecFireButtonWidget are not defined.
 
 =head1 AUTHOR
 
 Graham Barr <F<gbarr@pobox.com>>
 
+Current maintainer is Slaven Rezic <F<eserte@cs.tu-berlin.de>>.
 
 =head1 ACKNOWLEDGEMENTS
 

@@ -28,3 +28,4 @@ t/1numentryplain.t
 t/2numentry.t
 t/3cloth.t
 t/5tframe.t
+t/6numentry.t

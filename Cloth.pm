@@ -17,7 +17,7 @@ $VERSION = "1.03";
 
 package Tk::Cloth::Object;
 
-use vars qw(*Construct *DelegateFor *privateData);
+use vars qw(*Construct *DelegateFor *privateData *TkHash *_OnDestroy);
 
 # I cannot inherit from Tk::Widget as I am not a widget, but I do
 # want to use some of the methods widgets have.
@@ -25,6 +25,8 @@ use vars qw(*Construct *DelegateFor *privateData);
 *Construct = Tk::Widget->can('Construct');
 *DelegateFor = Tk::Widget->can('DelegateFor');
 *privateData = Tk::Widget->can('privateData');
+*TkHash = Tk::Widget->can('TkHash');
+*_OnDestroy = Tk::Widget->can('_OnDestroy');
 
 ##
 ## base class for all cloth items
@@ -218,11 +220,12 @@ Construct Tk::Cloth::Object 'Grid';
 sub Tk_type { 'grid' }
 
 package Tk::Cloth::Tag;
-use base qw(Tk::Derived Tk::Cloth::Item Tk::Cloth::Object);
+# with Tk::Derived in @ISA, Tag did not work anymore
+use base qw(Tk::Cloth::Item Tk::Cloth::Object);
 Construct Tk::Cloth::Object 'Tag';
+
 sub Tk_type { 'tag' }
 sub BackTrace { shift->cloth->BackTrace(@_); }
-
 
 sub optionGet {
     shift->cloth->optionGet(@_);
@@ -509,6 +512,8 @@ L<Tk::Canvas|Tk::Canvas>
 =head1 AUTHOR
 
 Graham Barr E<lt>F<gbarr@pobox.com>E<gt>
+
+Current maintainer is Slaven Rezic E<lt>F<eserte@cs.tu-berlin.de>E<gt>.
 
 =head1 COPYRIGHT
 

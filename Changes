@@ -1,4 +1,11 @@
-*** Release 2.0
+*** Release 2.01
+
+  - new methods for widget construction in Tk::NumEntry
+    (NumEntryPlainWidget, FireButtonWidget, IncFireButtonWidget,
+    DecFireButtonWidget) and Tk::FireButton (INCBITMAP,
+    HORIZINCBITMAP, DECBITMAP, HORIZDECBITMAP).
+
+*** Release 2.00
 
   - Removed Tk::Pane and Tk::ProgressBar - these are in the standard
     Tk distribution. To get these modules, grab the old 1.401 Tk-GBARR

@@ -5,7 +5,7 @@ use strict;
 use vars qw(@ISA $VERSION);
 
 @ISA = qw(Tk::Derived Tk::Frame);
-$VERSION = "0.02";
+$VERSION = "0.03";
 
 Construct Tk::Widget "IFrame";
 
@@ -31,7 +31,13 @@ sub Populate {
 	-relief		  => [PASSIVE => undef, undef, 'raised'],
 	-selectbackground =>
 		[PASSIVE => 'selectBackground', 'SelectBackground', 'red'],
-	-background 	  => ['SELF']
+	-background 	  => ['SELF'],
+
+	# XXX these are ignored --- YET
+	-ipadx => ['PASSIVE', 'ipadX', 'Pad', 0],
+	-ipady => ['PASSIVE', 'ipadY', 'Pad', 0],
+        -takefocus => ['SELF', 'takeFocus', 'TakeFocus', 0],
+        -dynamicgeometry => ['PASSIVE', 'dynamicGeometry', 'DynamicGeometry', 0]
     );
 
     $frame->bind('<Configure>', [\&layoutRequest, 1]);
@@ -195,6 +201,8 @@ sub selectCard {
     }
 
 }
+
+*add = \&addCard; # alias for addCard
 
 sub addCard {
     my $f = shift;
