@@ -1,4 +1,4 @@
-# $Id: NumEntryPlain.pm,v 1.7 2001/08/08 09:06:44 eserte Exp $
+# $Id: NumEntryPlain.pm,v 1.9 2003/01/13 23:05:41 eserte Exp $
 
 package Tk::NumEntryPlain;
 
@@ -9,7 +9,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Entry);
-$VERSION = sprintf("%d.%02d", q$Revision: 1.7 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 1.9 $ =~ /(\d+)\.(\d+)/);
 
 Construct Tk::Widget 'NumEntryPlain';
 
@@ -108,10 +108,14 @@ sub Populate {
         -minvalue    => [PASSIVE  => undef,         undef,         undef     ],
         -bell        => [PASSIVE  => "bell",        "Bell",        1         ],
         -command     => [CALLBACK => undef,         undef,         undef     ],
+	-browsecmd   => [CALLBACK => undef,         undef,         undef     ],
         -increment    => [PASSIVE => undef,         undef,         1         ],
         -bigincrement => [PASSIVE => undef,         undef,         undef     ],
+        ($Tk::platform eq 'MSWin32' ?
+          (-background => ['PASSIVE', qw/background Background/, undef]) :
+          ()),
+        DEFAULT      => [$e],
     );
-
 }
 
 ## Options implementation
@@ -184,6 +188,7 @@ sub incdec {
     $e->delete(0,'end');
     $e->insert(0,$val);
     $e->icursor($pos);
+    $e->Callback(-browsecmd) if $inc;
 }
 
 
@@ -243,6 +248,15 @@ L<"CAVEATS"> below).
 Specifies the value to be inserted into the entry widget. Similar
 to the standard B<-text> option, but will perform a range
 check on the value.
+
+=item -command
+
+A callback which is called if <Return> is pressed.
+
+=item -browsecmd
+
+A callback which is called every time an increment or decrement
+happens in the entry widget.
 
 =back
 

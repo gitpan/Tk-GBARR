@@ -1,3 +1,4 @@
+# A Titled Frame widget.
 #!/usr/local/bin/perl -w
 use strict;
 use Tk;

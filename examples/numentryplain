@@ -1,3 +1,4 @@
+# Entry for entering numeric values, plain version.
 #!/usr/local/bin/perl -w
 use strict;
 use Tk;

@@ -1,4 +1,4 @@
-# $Id: NumEntry.pm,v 2.3 2001/08/08 09:06:38 eserte Exp $
+# $Id: NumEntry.pm,v 2.4 2003/01/13 23:06:40 eserte Exp $
 
 package Tk::NumEntry;
 
@@ -9,7 +9,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Frame);
-$VERSION = sprintf("%d.%02d", q$Revision: 2.3 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 2.4 $ =~ /(\d+)\.(\d+)/);
 
 Construct Tk::Widget 'NumEntry';
 
@@ -186,9 +186,10 @@ only be set at creation time.
 
 Subclasses of NumEntry may override the following methods to use
 different widgets for the composition of the NumEntry. These are:
-NumEntryPlainWidget, FireButtonWidget, IncFireButtonWidget and
-DecFireButtonWidget. FireButtonWidget is used if IncFireButtonWidget
-or DecFireButtonWidget are not defined.
+NumEntryPlainWidget (usually C<NumEntryPlain>), FireButtonWidget
+(usually C<FireButton>, IncFireButtonWidget and DecFireButtonWidget.
+FireButtonWidget is used if IncFireButtonWidget or DecFireButtonWidget
+are not defined.
 
 =head1 AUTHOR
 

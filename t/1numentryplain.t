@@ -48,13 +48,35 @@ my $nep;
 }
 
 ##
-## Check -increment and -bigincrement options
+## Check -increment, -bigincrement, -command and -browsecmd options
 {
+    my $command = 0;
+    my $browsecmd = 0;
     my $e = $mw->NumEntryPlain(-increment    => 0.1,
-			       -bigincrement => 50);
+			       -bigincrement => 50,
+			       -command => sub { $command++ },
+			       -browsecmd => sub { $browsecmd++ },
+			      );
     ok($e->cget(-increment), 0.1);
     ok($e->cget(-bigincrement), 50);
+
+    if (0) {
+	# XXX eventGenerate does not work
+	if ($Tk::VERSION < 800.017) {
+	    skip("No -warp option for eventGenerate", 1) for (1..3);
+	} else {
+	    $e->update;
+	    my $x = $e->width/2;
+	    my $y = $e->height/2;
+	    $e->eventGenerate("<Motion>", '-x' => $x, '-y' => $y, -warp => 1);
+	    $e->eventGenerate("<Up>");
+	    ok($e->get, "1");
+	    ok($browsecmd, 1);
+	    $e->eventGenerate("<Return>",
+			      '-x' => $x, '-y' => $y,
+			      -warp => 1);
+	    ok($command, 1);
+	}
+    }
 }
 
-1;
-__END__

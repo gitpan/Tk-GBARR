@@ -1,3 +1,4 @@
+# Object-oriented Canvas.
 #!/usr/local/bin/perl -w
 use strict;
 use Tk qw(Ev);
