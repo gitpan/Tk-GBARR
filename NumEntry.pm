@@ -3,11 +3,12 @@ package Tk::NumEntry;
 
 use Tk ();
 use Tk::Frame;
+use Tk::Derived;
 use strict;
 
 use vars qw(@ISA $VERSION);
-@ISA = 'Tk::Frame';
-$VERSION = '1.01';
+@ISA = qw(Tk::Derived Tk::Frame);
+$VERSION = '1.05';
 
 Construct Tk::Widget 'NumEntry';
 
@@ -21,7 +22,7 @@ sub Populate {
     require Tk::FireButton;
     require Tk::NumEntryPlain;
 
-    my $e = $f->Component(NumEntryPlain => 'entry',
+    my $e = $f->Component( NumEntryPlain => 'entry',
         -borderwidth        => 0,
         -highlightthickness => 0,
     );
@@ -29,11 +30,17 @@ sub Populate {
     my $binc = $f->Component( FireButton => 'inc',
 	-bitmap		    => $Tk::FireButton::INCBITMAP,
 	-command	    => sub { $e->incdec(1) },
+	-takefocus	    => 0,
+	-highlightthickness => 0,
+	-anchor             => 'center',
     );
 
     my $bdec = $f->Component( FireButton => 'dec',
 	-bitmap		    => $Tk::FireButton::DECBITMAP,
 	-command	    => sub { $e->incdec(-1) },
+	-takefocus	    => 0,
+	-highlightthickness => 0,
+	-anchor             => 'center',
     );
 
     $f->gridColumnconfigure(0, -weight => 1);
@@ -48,11 +55,12 @@ sub Populate {
     $e->grid(-row => 0, -column => 0, -rowspan => 2, -sticky => 'news');
 
     $f->ConfigSpecs(
-	-borderwidth => [SELF	  => "borderWidth", "BorderWidth", 2	     ],
-	-relief      => [SELF	  => "relief",	    "Relief",	   "sunken"  ],
-	-background  => [CHILDREN => "background",  "Background",  "#d9d9d9" ],
-	-buttons     => [METHOD   => undef,	    undef,	   1	     ],
-	-state       => [CHILDREN => "state", 	    "State", 	   "normal"  ],
+	-borderwidth => ['SELF'     => "borderWidth", "BorderWidth", 2	     ],
+	-relief      => ['SELF'     => "relief",      "Relief",	    "sunken"  ],
+	-background  => ['CHILDREN' => "background",  "Background", Tk::NORMAL_BG ],
+	-foreground  => ['CHILDREN' => "background",  "Background", Tk::BLACK ],
+	-buttons     => ['METHOD'   => undef,	    undef,	   1	     ],
+	-state       => ['CHILDREN' => "state", 	    "State", 	   "normal"  ],
 	-repeatdelay => [[$binc,$bdec]
 				  => "repeatDelay", "RepeatDelay", 300	     ],
 	-repeatinterval
@@ -100,20 +108,25 @@ Tk::NumEntry - A numeric Entry widget with inc. & dec. Buttons
 
 =head1 SYNOPSIS
 
-    use Tk::NumEntry;
+S<    >B<use Tk::NumEntry;>
+
+S<    >I<$parent>-E<gt>B<NumEntry>(?I<-option>=E<gt>I<value>, ...?);
 
 =head1 DESCRIPTION
 
-C<Tk::NumEntry> defines a widget for entering integer numbers. The widget
+B<Tk::NumEntry> defines a widget for entering integer numbers. The widget
 also contains buttons for increment and decrement.
 
-C<Tk::NumEntry> supports all the options and methods that the plain 
+B<Tk::NumEntry> supports all the options and methods that the plain 
 NumEntry widget provides (see L<Tk::NumEntryPlain>), plus the
 following options
 
 =head1 STANDARD OPTIONS
 
-I<-repeatdelay -repeatinterval>
+Besides the standard options of the L<Button|Tk::Button> widget
+NumEntry supports:
+
+B<-repeatdelay> B<-repeatinterval>
 
 =head1 WIDGET-SPECIFIC OPTIONS
 
@@ -125,17 +138,16 @@ I<-repeatdelay -repeatinterval>
 
 =item Switch:           B<-buttons>
 
-=item -buttons
+=item Fallback:		B<1>
 
-boolian that defines if the inc. and dec buttons are visible
-(default = true).
+boolian that defines if the inc. and dec buttons are visible.
 
 =back
 
 
 =head1 AUTHOR
 
-Graham Barr <F<gbarr@ti.com>>
+Graham Barr <F<gbarr@pobox.com>>
 
 
 =head1 ACKNOWLEDGEMENTS
@@ -146,7 +158,7 @@ Tk::NumEntry into Tk::FireButton, Tk::NumEntryPlain and Tk::NumEntry
 
 =head1 COPYRIGHT
 
-Copyright (c) 1997 Graham Barr. All rights reserved.
+Copyright (c) 1997-1998 Graham Barr. All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

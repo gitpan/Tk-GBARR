@@ -1,14 +1,14 @@
-#!/usr/local/bin/perl
-
+#!/usr/local/bin/perl -w
+use strict;
 use Tk qw(Ev);
 use Tk::Cloth;
 
-$mw = new MainWindow;
+my $mw = Tk::MainWindow->new;
 
-$cloth = $mw->Cloth();
+my $cloth = $mw->Cloth();
 
 
-$r = $cloth->Rectangle(
+my $r = $cloth->Rectangle(
 	-coords => [0,0,100,100],
 	-fill => 'green'
 );
@@ -30,7 +30,7 @@ $r = $cloth->Rectangle(
     );
 }
 
-$tag = $cloth->Tag;
+my $tag = $cloth->Tag;
 
 $tag->Oval(
 	-coords => [100,0,200,100],

@@ -1,10 +1,9 @@
 #!/usr/local/bin/perl -w
-
+use strict;
 use Tk;
 use Tk::NumEntryPlain;
-use strict;
 
-my $mw = new MainWindow;
+my $mw = Tk::MainWindow->new;
 
 my $nume = $mw->NumEntryPlain(-command => sub { print "Value = ",@_,"\n" });
 
@@ -19,4 +18,5 @@ $nume = $mw->NumEntryPlain(
 
 $nume->pack(-side => 'top', -fill => 'x');
 
-MainLoop;
+Tk::MainLoop;
+__END__

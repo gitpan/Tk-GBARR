@@ -1,10 +1,10 @@
-#!/usr/local/bin/perl
-
+#!/usr/local/bin/perl -w
+use strict;
 use Tk;
 use Tk::NumEntry;
 use strict;
 
-my $mw = new MainWindow;
+my $mw = Tk::MainWindow->new;
 
 my $nume = $mw->NumEntry( -command => sub { print "Value = ",@_,"\n" });
 
@@ -19,4 +19,5 @@ $nume = $mw->NumEntry(
 
 $nume->pack(-side => 'top', -fill => 'x');
 
-MainLoop;
+Tk::MainLoop;
+__END__

@@ -8,7 +8,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Entry);
-$VERSION = "0.02";
+$VERSION = "0.08";
 
 Construct Tk::Widget 'NumEntryPlain';
 
@@ -80,8 +80,6 @@ sub Populate {
         -minvalue    => [PASSIVE  => undef,         undef,         undef     ],
         -bell        => [PASSIVE  => "bell",        "Bell",        1         ],
         -command     => [CALLBACK => undef,         undef,         undef     ],
-        -textvariable
-                     => [PASSIVE  => undef,         undef,         undef     ],
     );
 
 }
@@ -110,7 +108,7 @@ sub value {
     # Do a range check after all configuration has finished,
     # as we may not yet know the range
 
-    $e->DoWhenIdle([ \&incdec, $e, 0]);
+    $e->afterIdle([ $e => 'incdec', 0]);
 
     length($old) ? $old + 0 : $e->{Configure}{'-defaultvalue'};
 }
@@ -168,18 +166,19 @@ Tk::NumEntryPlain - A numeric entry widget
 
 =head1 SYNOPSIS
 
-    use Tk::NumEntryPlain;
+S<    >B<use Tk::NumEntryPlain>;
 
 =head1 DESCRIPTION
 
-C<Tk::NumEntryPlain> defines a widget for entering integer numbers.
+B<Tk::NumEntryPlain> defines a widget for entering integer numbers.
 
-C<Tk::NumEntryPlain> supports all the options and methods that a normal
-Entry widget provides, plus the following options
+B<Tk::NumEntryPlain> supports all the options and methods that a normal
+L<Entry|Tk::Entry> widget provides, plus the following options
 
 =head1 STANDARD OPTIONS
 
-I<-repeatdelay -repeatinterval>
+B<-repeatdelay>
+B<-repeatinterval>
 
 =head1 WIDGET-SPECIFIC OPTIONS
 
@@ -188,39 +187,63 @@ I<-repeatdelay -repeatinterval>
 =item -minvalue
 
 Defines the minimum legal value that the widget can hold. If this
-value is C<undef> then there is no minimum value (default = undef)
+value is C<undef> then there is no minimum value (default = undef).
 
 =item -maxvalue
 
 Defines the maximum legal value that the widget can hold. If this
-value is C<undef> then there is no maximum value (default = undef)
+value is C<undef> then there is no maximum value (default = undef).
 
 =item -bell
 
 Specifies a boolean value. If true then a bell will ring if the user
 attempts to enter an illegal character into the entry widget, and
 when the user reaches the upper or lower limits when using the
-up/down buttons for keys.
+up/down buttons for keys (default = true).
+
+=item -textvariable
+
+Reference to a scalar variable that contains the value currently
+in the B<NumEntry>.  Use the variable only for reading (see
+L<"CAVEATS"> below).
 
 =item -value
 
-Specifies the value to be inserted into the entry widget. Similar to the
-standard C<-text> option, but will perform a range check on the value.
+Specifies the value to be inserted into the entry widget. Similar
+to the standard B<-text> option, but will perform a range
+check on the value.
 
 =back
 
+=head1 CAVEATS
+
+=over 4
+
+=item -textvariable
+
+B<-textvariable> should only be used to read out the current
+value in the B<NumEntry>.
+
+Values set via B<-textvariable> are not valided. Therefore
+it's possible to insert, e.g., 'abc', into the B<NumEntry>.
+
+=back
+
+=head1 SEE ALSO
+
+L<Tk::NumEntry|Tk::NumEntry>
+L<Tk::Entry|Tk::Entry>
+
 =head1 HISTORY
 
-The code was extracted Tk::NumEntry and slightly modified
-by Achim Bohnet <ach@mpe.mpg.de>.  Tk::NumEntry's author
-is Graham Barr <gbarr@pobox.com>.
+The code was extracted from B<Tk::NumEntry> and slightly modified
+by Achim Bohnet E<gt>ach@mpe.mpg.deE<gt>.  B<Tk::NumEntry>'s author
+is Graham Barr E<gt>gbarr@pobox.comE<gt>.
 
 =head1 COPYRIGHT
 
-Copyright (c) 1997 Graham Barr. All rights reserved.
+Copyright (c) 1997-1998 Graham Barr. All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
-
-Except the typo's, they blong to Achim :-)
 
 =cut

@@ -19,13 +19,12 @@ sub MY::libscan
 
 WriteMakefile(
 	PREREQ_PM => { 'Tk' => '402.002' }, # Tk/NumEntry need it
-	NAME	=> 'Tk',
+	NAME	=> 'Tk::GBARR',
 	DISTNAME => 'Tk-GBARR',
-	VERSION	=> "1.03",
+	VERSION	=> "1.0401",
 	'dist'	=> {
 			COMPRESS 	=> 'gzip -9f',
 			SUFFIX   	=> '.gz', 
-			DIST_DEFAULT 	=> 'all tardist',
+			#DIST_DEFAULT 	=> 'all tardist',
 		   },
-	PMLIBDIRS => ['Tk'],
 );

@@ -4,8 +4,8 @@ use Tk;
 use strict;
 use vars qw($VERSION @ISA);
 
-@ISA = qw(Tk::Frame);
-$VERSION = "1.01";
+@ISA = qw(Tk::Derived Tk::Frame);
+$VERSION = "1.03";
 
 Construct Tk::Widget "TFrame";
 
@@ -188,16 +188,20 @@ Tk::TFrame - A Titled Frame widget
 
 =head1 DESCRIPTION
 
-C<Tk::TFrame> provides a frame but with a title which overlaps the border
+B<Tk::TFrame> provides a frame but with a title which overlaps the border
 by half of it's height.
+
+=head1 SEE ALSO
+
+L<Tk::LabFrame|Tk::LabFrame>
 
 =head1 AUTHOR
 
-Graham Barr E<lt>F<gbarr@ti.com>E<gt>
+Graham Barr E<lt>F<gbarr@pobox.com>E<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 1997 Graham Barr. All rights reserved.
+Copyright (c) 1997-1998 Graham Barr. All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

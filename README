@@ -1,5 +1,7 @@
-This distribution is my contribution to the ever growing collection
-of Tk Widgets, currently it includes
+CONTENTS
+
+  This distribution is my contribution to the ever growing collection
+  of Tk Widgets, currently it includes
 
 	Tk::Cloth       - An OO interface to Tk::Canvas
 	Tk::Pane        - A widget panner (view only part of a widget)
@@ -7,30 +9,49 @@ of Tk Widgets, currently it includes
 	Tk::ProgressBar - a widget to show completion status etc
 	Tk::NumEntry    - An entry widget that accepts numbers and has up/down
 			  buttons for in/decrement.
+	Tk::FireButton  - Button that keeps invoking command when pressed
 
-To use this distribution Tk402.002 or better is required.
+REQUIREMENTS
+
+  o To use this distribution Tk402.002 or better is required.
+    (there are no know problem with latest Tk800 releases)
+  o Some regression test use the Test.pm module (included in
+    perl 5.005).  If it's not installed the tests are skipped.
+
+CHANGES
+
+A complete list of changes is in the ChangeLog file.  Here
+a short summary whats new in the release V1.04:
+
+	All widgets:
+		o Documention more like in Tk800 docs
+
+	Tk::NumEntry
+		o fixed hidden FireButton take focus
+		o -textvariable now works
+
+	Tk::NumEntryPlain
+		o Fixed wrong option definition
+
+	Tk::ProgressBar
+	        o value() method now resets value to -from option
+		  value when it get the undef value. (Now creating
+		  a ProgressBar without args does not complain about
+		  undefined values.
+		
 
 The documentation is minimal (or even non-existant) but I was
 requested to release them before my life enters a stage of
-turmoil (I am moving to the US real soon). I will release
-better documentation after I have settled. In the mean time
-the I hope the examples directory is sufficient.
+turmoil.  I hope the examples/ directory is sufficient to
+understand how to use the widgets.
 
-Also in the works are :-
+Please send all bugs/comments/patches directly to the ptk mailing list
 
-	Tk::ListMgr   - A widget that manages lists in various ways
-			eg, multi column, array
-	Tk::IFrame    - An index frame (ie has tabs to select which sub-frame
-			is viewable)
-	Tk::MenuEntry - a text entry with a menu
+	ptk@lists.stanford.edu
 
-These modules can be found in the alpha/ directory. Please feel free to
-mail me any comments you have reguarding these modules.
+The distribution is currently maintained by Achim Bohnet <ach@mpe.mpg.de>.
 
-Please mail all bugs/comments directly to me <gbarr@ti.com> as I do not
-read the Tk lists on a regular basis.
-
-Copyright (c) 1997 Graham Barr <gbarr@ti.com>. All rights reserved.
+Copyright (c) 1997-1998 Graham Barr <gbarr@pobox.com>. All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

@@ -1,18 +1,22 @@
 # Tk::Pane.pm
 #
-# Copyright (c) 1995 Graham Barr <gbarr@ti.com>. All rights reserved.
+# Copyright (c) 1997-1998 Graham Barr <gbarr@pobox.com>. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 
 package Tk::Pane;
 
 use Tk;
+use Tk::Widget;
+use Tk::Derived;
+use Tk::Frame;
+
 use strict;
 use vars qw(@ISA $VERSION);
 
-@ISA = qw(Tk::Frame);
+@ISA = qw(Tk::Derived Tk::Frame);
 
-$VERSION = "1.01";
+$VERSION = "1.03";
 
 Construct Tk::Widget 'Pane';
 
@@ -410,21 +414,21 @@ Tk::Pane - A window panner
 
 =head1 DESCRIPTION
 
-C<Tk::Pane> provides a scrollable frame widget. Once created it can be
+B<Tk::Pane> provides a scrollable frame widget. Once created it can be
 treated as a frame, except it is scrollable.
 
 =head1 OPTIONS
 
 =over 4
 
-=item -gridded => I<direction>
+=item B<-gridded> =E<gt> I<direction>
 
 Specifies if the top and left edges of the pane should snap to a
 grid column. This option is only useful if the widgets in the pane
 are managed by the I<grid> geometry manager. Possible values are
 B<x>, B<y> and B<xy>.
 
-=item -sticky => I<style>
+=item B<-sticky> =E<gt> I<style>
 
 If Pane is larger than its requested dimensions, this option may be used to
 position (or stretch) the slave within its cavity. I<Style> is a string that
@@ -440,15 +444,15 @@ height (or width) of its cavity.
 
 =over 4
 
-=item see ( I<widget, ?options?> )
+=item I<$pane>-E<gt>B<see>(I<$widget> ?,I<options>?)
 
-Adjusts the view so that I<widget> is visable. Aditional parameters in
+Adjusts the view so that I<$widget> is visable. Aditional parameters in
 I<options-value> pairs can be passed, each I<option-value> pair must be
 one of the following
 
-=over 2
+=over 8
 
-=item -anchor => I<anchor>
+=item B<-anchor> =E<gt> I<anchor>
 
 Specifies how to make the widget visable. If not given then as much of
 the widget as possible is made visable.
@@ -462,7 +466,7 @@ as possible made visable in the x direction.
 
 =back
 
-=item xview
+=item I<$pane>-E<gt>B<xview>
 
 Returns a list containing two elements, both of which are real fractions
 between 0 and 1. The first element gives the position of  the left of the
@@ -470,17 +474,17 @@ window, relative to the Pane as a whole (0.5 means it is halfway through the
 Pane, for example). The second element gives the position of the right of the
 window, relative to the Pane as a whole.
 
-=item xview widget
+=item I<$pane>-E<gt>B<xview>(I<$widget>)
 
 Adjusts the view in the window so that I<widget> is displayed at the left of
 the window. 
 
-=item xview ( moveto => fraction )
+=item I<$pane>-E<gt>B<xview>(B<moveto> =E<gt> I<fraction>)
 
 Adjusts the view in the window so that I<fraction> of the total width of the
 Pane is off-screen to the left. fraction must be a fraction between 0 and 1.
 
-=item xview ( scroll => number, what )
+=item I<$pane>-E<gt>B<xview>(B<scroll> =E<gt> I<number>, I<what>)
 
 This command shifts the view in the window left or right according to I<number>
 and I<what>. I<Number> must be an integer. I<What> must be either B<units> or
@@ -490,7 +494,7 @@ B<pages> then the view adjusts by number screenfuls. If number is negative then
 widgets farther to the left become visible; if it is positive then widgets
 farther to the right become visible. 
 
-=item yview
+=item I<$pane>-E<gt>B<yview>
 
 Returns a list containing two elements, both of which are real fractions
 between 0 and 1. The first element gives the position of  the top of the
@@ -498,17 +502,17 @@ window, relative to the Pane as a whole (0.5 means it is halfway through the
 Pane, for example). The second element gives the position of the bottom of the
 window, relative to the Pane as a whole.
 
-=item yview widget
+=item I<$pane>-E<gt>B<yview>(I<$widget>)
 
 Adjusts the view in the window so that I<widget> is displayed at the top of the
 window. 
 
-=item yview ( moveto => fraction )
+=item I<$pane>-E<gt>B<yview>(B<moveto> =E<gt> I<fraction>)
 
 Adjusts the view in the window so that I<fraction> of the total width of the
 Pane is off-screen to the top. fraction must be a fraction between 0 and 1.
 
-=item yview ( scroll => number, what )
+=item I<$pane>-E<gt>B<yview>(B<scroll> =E<gt> I<number>, I<what>)
 
 This command shifts the view in the window up or down according to I<number>
 and I<what>. I<Number> must be an integer. I<What> must be either B<units> or
@@ -526,7 +530,7 @@ Graham Barr E<lt>F<gbarr@pobox.com>E<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 1997 Graham Barr. All rights reserved.
+Copyright (c) 1997-1998 Graham Barr. All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

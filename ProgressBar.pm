@@ -8,7 +8,7 @@ use strict;
 use vars qw(@ISA $VERSION);
 
 @ISA = qw(Tk::Derived Tk::Canvas);
-$VERSION = "1.01";
+$VERSION = "1.04";
 
 Construct Tk::Widget 'ProgressBar';
 
@@ -281,11 +281,11 @@ sub value {
     my $val = defined($c->{Configure}{'-variable'})
 		? $c->{Configure}{'-variable'}
 		: \$c->{Configure}{'-value'};
-    my $old = $$val;
+    my $old = defined($$val) ? $$val : $c->{Configure}{'-from'};
 
     if(@_) {
 	my $value = shift;
-	$$val = $value;
+	$$val = defined($value) ? $value : $c->{Configure}{'-from'};
 	_layoutRequest($c,2);
     }
 
@@ -349,13 +349,12 @@ Tk::ProgressBar - A graphical progress bar
 
 =head1 DESCRIPTION
 
-C<Tk::ProgressBar> provides a widget which will show a graphical representation
+B<Tk::ProgressBar> provides a widget which will show a graphical representation
 of a value, given maximum and minimum reference values.
 
 =head1 STANDARD OPTIONS
 
-
-I<-padx -pady -troughcolor -highlightthickness -borderwidth -relief>
+B<-padx -pady -troughcolor -highlightthickness -borderwidth -relief>
 
 
 =head1 WIDGET-SPECIFIC OPTIONS
@@ -391,8 +390,9 @@ integral).
 
 =item -variable
 
-Specifies the name of a global variable to link to the ProgressBar. Whenever the
-value of the variable changes, the ProgressBar will upate to reflect this value.
+Specifies the reference to a scalar variable to link to the ProgressBar.
+Whenever the value of the variable changes, the ProgressBar will upate
+to reflect this value. (See also the B<value> method below.)
 
 =item -from
 
@@ -406,21 +406,22 @@ value of the variable changes, the ProgressBar will upate to reflect this value.
 
 =over 4
 
-=item $ProgressBar->B<value>(I<?value?>)
+=item I<$ProgressBar>->B<value>(?I<value>?)
 
-If I<value> is omitted, returns the current value of the ProgressBar. If I<value>
-is given, the value of the ProgressBar is set.
+If I<value> is omitted, returns the current value of the ProgressBar.  If
+I<value> is given, the value of the ProgressBar is set. If I<$value> is
+given but undefined the value of the option B<-from> is used.
 
 =back
 
 
 =head1 AUTHOR
 
-Graham Barr E<lt>F<gbarr@ti.com>E<gt>
+Graham Barr E<lt>F<gbarr@pobox.com>E<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 1997 Graham Barr. All rights reserved.
+Copyright (c) 1997-1998 Graham Barr. All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 

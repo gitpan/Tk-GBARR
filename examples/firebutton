@@ -1,12 +1,16 @@
+#!/usr/local/bin/perl -w
+use strict;
 use Tk;
 use Tk::FireButton;
 
 my $i = 0;
 
-my $mw = MainWindow->new();
+my $mw = Tk::MainWindow->new();
 my $fb = $mw->FireButton(
 		-text=>'Fire',
-		-command=>sub{$i++; print "fire $i\n"}
+		-command=>sub{$i++;}
 		)->pack;
+my $l = $mw->Label(-textvariable=>\$i)->pack(qw/-padx 10 -pady 6/);
 
-MainLoop;
+Tk::MainLoop;
+__END__

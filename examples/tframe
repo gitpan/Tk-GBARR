@@ -1,11 +1,11 @@
-#!/usr/local/bin/perl
-
+#!/usr/local/bin/perl -w
+use strict;
 use Tk;
 use Tk::TFrame;
 
-$mw = new MainWindow;
+my $mw = Tk::MainWindow->new;
 
-$frame = $mw->TFrame(
+my $frame = $mw->TFrame(
 	-label => [
 		-text => 'Title',
 		-borderwidth => 2,
@@ -23,3 +23,4 @@ $frame->Label(-text => 'Bottom')->pack(-side => 'bottom');
 $frame->pack(-fill => 'both', -expand => 1);
 
 Tk::MainLoop;
+__END__

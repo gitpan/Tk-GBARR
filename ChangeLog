@@ -1,3 +1,66 @@
+
+  Tk::ProgressBar
+	o value() method now resets value to -from option
+	  value when it get the undef value. (Now creating
+	  a ProgressBar without args does not complain about
+	  undefined values.
+
+	o Tk800 markup style fixes in POD
+
+  Tk::NumEntryPlain
+	o replaced DoWhenIdle with afterIdle so a
+	  pending idle callback is canceled when widget
+	  is destroyed.
+
+        o Used 'incdec' instead of \&incdec in afterIdle
+	  callback for proper subclassing. 
+
+	o enabled -textvariable + doc: that's only
+	  save for read
+
+  Tk::NumEntry:
+	o specify -anchor=>'center' for FireButton so
+	  one does not rely on the fact that it's the
+	  default.
+	o explicitly with off Focus of FireButton to 
+	  prevent hanging focus with hidden buttons.
+
+	o Tk800 markup style fixes in POD
+
+  Tk::FireButton:
+	o Apply Slaven Rezic (thanks) Firebutton patch so
+    	  option handling work and ContextHelp works
+    	  with FireButton.  This also fixes the
+    	  'hanging focus' problem Stephen O'Lidie
+    	  reported with NumEntry and hidden inc/dec.
+
+	o Tk800 markup style fixes in POD
+
+	o removed -anchor from ConfigSpec because it same
+	  as for Button.
+
+  Tk::TFrame
+  Tk::Pane
+  Tk::Cloth
+	o Tk800 markup style fixes in POD
+	o CR update and email pobox.com
+
+  Tk/*, Makefile.PL, MANIFEST
+
+	o better perllocal.pod entry now Tk::GBARR instead of Tk
+          (moved Tk/* . and set WriteMakefile's NAME to Tk::GBARR,
+    	  updated MANIFEST)
+
+	o added 1998 to copyright and changed @ti.com @pobox.com.
+
+  t/0basic.t
+	o simple tests for all widgets (derived from
+	  Tk800.005/t/create.t). Finds ConfigSpecs bug.
+
+  t/1numentryplain.t
+	o test if read of -textvariable works.
+
+	
 *** Release 1.03
 
 Wed Dec 10 1997 <gbarr@pobox.com> (Graham Barr)

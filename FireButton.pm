@@ -9,7 +9,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Button);
-$VERSION = '0.01';
+$VERSION = '0.04';
 
 Construct Tk::Widget 'FireButton';
 
@@ -48,7 +48,7 @@ sub butDown {
     if ($fire eq 'initial') {
 	# XXX why isn't relief saving done the Tk::Button as
         #soon as callback is invoked?
-	$b->{my_save_relief} = $b->cget('-relief');
+	$b->{tk_firebutton_save_relief} = $b->cget('-relief');
 
    	$b->RepeatId($b->after( $b->cget('-repeatdelay'),
 		[\&butDown, $b, 'again'])
@@ -67,8 +67,8 @@ sub butUp {
     my $b = shift;
     $b->CancelRepeat;
     $b->SUPER::butUp;
-    # XXX
-    $b->configure(-relief=>$b->{my_save_relief});
+    $b->configure(-relief=>$b->{tk_firebutton_save_relief})
+	if $b->{tk_firebutton_save_relief};
 }
 
 sub Populate {
@@ -77,18 +77,14 @@ sub Populate {
     $b->SUPER::Populate($args);
 
     $b->ConfigSpecs(
-	-anchor		    => 'center',
-	-highlightthickness => 0,
-	-takefocus 	    => 0,
-	-padx 		    => 0,
-	-pady 		    => 0,
+	# Override button fallbacks
+	-padx 		    => [qw(SELF padX               Pad                0)],
+	-pady 		    => [qw(SELF padY               Pad                0)],
 
-        -repeatdelay => [PASSIVE  => "repeatDelay", "RepeatDelay", 300	     ],
-	-repeatinterval
-		     => [PASSIVE  => "repeatInterval",
-						    "RepeatInterval",
-								   100	     ],
-    );
+	# new options
+        -repeatdelay     => [qw(PASSIVE repeatDelay    RepeatDelay    300)],
+	-repeatinterval  => [qw(PASSIVE repeatInterval RepeatInterval 100)],
+	);
 
     $b;
 }
@@ -99,7 +95,7 @@ __END__
 
 =head1 NAME
 
-Tk::FireButton - Button that keeps invoking command when pressed
+Tk::FireButton - Button that keeps invoking callback when pressed
 
 
 =head1 SYNOPSIS
@@ -116,7 +112,7 @@ Tk::FireButton - Button that keeps invoking command when pressed
 =head1 DESCRIPTION
 
 B<FireButton> is-a B<Button> widget (see L<Tk::Button>) that
-keeps invoking the callback bound to it as long as the <Button>
+keeps invoking the callback bound to it as long as the <FireButton>
 is pressed.
 
 
@@ -130,7 +126,7 @@ super-class (see L<Tk::Button>).
 =head1 STANDARD OPTIONS
 
 B<FireButton> supports all the standard options of a B<Button> widget.
-See L<options> for details on the standard options.
+See L<Tk::options> for details on the standard options.
 
 
 =head1 WIDGET-SPECIFIC OPTIONS
@@ -149,10 +145,6 @@ See L<options> for details on the standard options.
 Specifies the amount of time before the callback is first invoked after
 the Button-1 is pressed over the widget.
 
-=back
-
-
-=over 4
 
 =item Name:             B<repeatInterval>
 
@@ -167,42 +159,30 @@ callback bound to the widget with the C<command> option.
 
 =back
 
-=head1 CHANDED DEFAULTS
+=head1 CHANDED OPTION FALLBACK VALUES
 
 The fallback values of the following options as different
 from the B<Button> widget:
 
-        -anchor             => 'center',
-        -highlightthickness => 0,
-        -takefocus          => 0,
         -padx               => 0,
         -pady               => 0,
 
 
 =head1 METHODS
 
-Same as for L<Tk::Button>.
+Same as for L<Button|Tk::Button> widget.
+
 
 =head1 ADVERTISED WIDGETS
 
 None.
 
+
 =head1 HISTORY
 
-The code was extracted Tk::NumEntry and slightly modified
-by Achim Bohnet <ach@mpe.mpg.de>.  Tk::NumEntry's author
-is Graham Barr <gbarr@pobox.com>.
-
-=head1 FUTURE
-
-Convert it to a library so one could use
-
-   use Tk::Lib::Fire;
-   ...
-   @ISA = qw(... Tk::Lib::Fire ... )
-   ...
-   $widget->bindFire(startEvent, cancalEvent);
-
-so one could use it with button press/release, entry up/down, ...
+The code was extracted from Tk::NumEntry and slightly modified
+by Achim Bohnet E<gt>ach@mpe.mpg.deE<gt>.  Tk::NumEntry's author
+is Graham Barr E<gt>gbarr@pobox.comE<gt>.
 
 =cut
+

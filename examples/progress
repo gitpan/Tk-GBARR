@@ -1,10 +1,10 @@
-#!/usr/local/bin/perl
-
+#!/usr/local/bin/perl -w
+use strict;
 use Tk;
 use Tk::ProgressBar;
 use Tk::Scale;
 
-my $mw = new MainWindow;
+my $mw = Tk::MainWindow->new;
 
 my $status_var = 0;
 

@@ -1,6 +1,6 @@
 ## Tk::Cloth
 ##
-## Copyright (c) 1997 Graham Barr. All rights reserved.
+## Copyright (c) 1997-1998 Graham Barr. All rights reserved.
 ## This program is free software; you can redistribute it and/or modify it
 ## under the same terms as Perl itself.
 
@@ -13,7 +13,7 @@ package Tk::Cloth;
 use strict;
 use vars qw($VERSION);
 
-$VERSION = "1.01";
+$VERSION = "1.03";
 
 package Tk::Cloth::Object;
 
@@ -504,8 +504,12 @@ Tk::Cloth - An OO Tk Canvas
 
 =head1 DESCRIPTION
 
-C<Tk::Cloth> provides an object-orientated approach to a canvas and canvas
+B<Tk::Cloth> provides an object-orientated approach to a canvas and canvas
 items.
+
+=head1 SEE ALSO
+
+L<Tk::Canvas|Tk::Canvas>
 
 =head1 AUTHOR
 
@@ -513,7 +517,7 @@ Graham Barr E<lt>F<gbarr@pobox.com>E<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 1997 Graham Barr. All rights reserved.
+Copyright (c) 1997-1998 Graham Barr. All rights reserved.
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
