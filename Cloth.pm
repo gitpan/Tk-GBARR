@@ -8,14 +8,14 @@
 ## Base class for the creation of all cloth objects
 ##
 
-## $Id: Cloth.pm,v 2.2 2001/08/08 09:06:16 eserte Exp $
+## $Id: Cloth.pm,v 2.3 2003/10/22 21:33:17 eserte Exp $
 
 package Tk::Cloth;
 
 use strict;
 use vars qw($VERSION);
 
-$VERSION = sprintf("%d.%02d", q$Revision: 2.2 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 2.3 $ =~ /(\d+)\.(\d+)/);
 
 package Tk::Cloth::Object;
 
@@ -515,7 +515,7 @@ L<Tk::Canvas|Tk::Canvas>
 
 Graham Barr E<lt>F<gbarr@pobox.com>E<gt>
 
-Current maintainer is Slaven Rezic E<lt>F<slaven.rezic@berlin.de>E<gt>.
+Current maintainer is Slaven Rezic E<lt>F<slaven@rezic.de>E<gt>.
 
 =head1 COPYRIGHT
 

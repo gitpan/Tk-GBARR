@@ -1,4 +1,4 @@
-# $Id: NumEntry.pm,v 2.4 2003/01/13 23:06:40 eserte Exp $
+# $Id: NumEntry.pm,v 2.6 2006/05/23 21:08:08 eserte Exp $
 
 package Tk::NumEntry;
 
@@ -9,7 +9,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Frame);
-$VERSION = sprintf("%d.%02d", q$Revision: 2.4 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 2.6 $ =~ /(\d+)\.(\d+)/);
 
 Construct Tk::Widget 'NumEntry';
 
@@ -79,7 +79,7 @@ sub Populate {
 	-borderwidth => ['SELF'     => "borderWidth", "BorderWidth", 2	     ],
 	-relief      => ['SELF'     => "relief",      "Relief",	    "sunken"  ],
 	-background  => ['CHILDREN' => "background",  "Background", Tk::NORMAL_BG ],
-	-foreground  => ['CHILDREN' => "background",  "Background", Tk::BLACK ],
+	-foreground  => ['CHILDREN' => "foreground",  "Foreground", Tk::BLACK ],
 	-buttons     => ['METHOD'   => undef,	    undef,	   1	     ],
 	-state       => ['CHILDREN' => "state", 	    "State", 	   "normal"  ],
 	-repeatdelay => [[$binc,$bdec]
@@ -195,7 +195,7 @@ are not defined.
 
 Graham Barr <F<gbarr@pobox.com>>
 
-Current maintainer is Slaven Rezic <F<slaven.rezic@berlin.de>>.
+Current maintainer is Slaven Rezic <F<slaven@rezic.de>>.
 
 =head1 ACKNOWLEDGEMENTS
 

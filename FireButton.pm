@@ -1,5 +1,5 @@
 # POD after __END__
-# $Id: FireButton.pm,v 1.4 2001/08/08 09:06:21 eserte Exp $
+# $Id: FireButton.pm,v 1.5 2003/10/22 21:33:11 eserte Exp $
 
 package Tk::FireButton;
 
@@ -10,7 +10,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Button);
-$VERSION = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
 
 Construct Tk::Widget 'FireButton';
 
@@ -219,7 +219,7 @@ None.
 The code was extracted from Tk::NumEntry and slightly modified
 by Achim Bohnet E<gt>ach@mpe.mpg.deE<gt>.  Tk::NumEntry's author
 is Graham Barr E<gt>gbarr@pobox.comE<gt>. The current maintainer is
-Slaven Rezic E<gt>slaven.rezic@berlin.deE<gt>.
+Slaven Rezic E<gt>slaven@rezic.deE<gt>.
 
 =cut
 

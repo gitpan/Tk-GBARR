@@ -1,4 +1,4 @@
-# $Id: NumEntryPlain.pm,v 1.9 2003/01/13 23:05:41 eserte Exp $
+# $Id: NumEntryPlain.pm,v 1.10 2003/10/22 21:32:59 eserte Exp $
 
 package Tk::NumEntryPlain;
 
@@ -9,7 +9,7 @@ use strict;
 
 use vars qw(@ISA $VERSION);
 @ISA = qw(Tk::Derived Tk::Entry);
-$VERSION = sprintf("%d.%02d", q$Revision: 1.9 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 1.10 $ =~ /(\d+)\.(\d+)/);
 
 Construct Tk::Widget 'NumEntryPlain';
 
@@ -296,7 +296,7 @@ The code was extracted from B<Tk::NumEntry> and slightly modified
 by Achim Bohnet E<lt>ach@mpe.mpg.deE<gt>.  B<Tk::NumEntry>'s author
 is Graham Barr E<lt>gbarr@pobox.comE<gt>.
 
-Current maintainer is Slaven Rezic E<lt>slaven.rezic@berlin.deE<gt>.
+Current maintainer is Slaven Rezic E<lt>slaven@rezic.deE<gt>.
 
 =head1 COPYRIGHT
 

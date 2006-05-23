@@ -1,3 +1,6 @@
+*** Release 2.07
+  - fixed foreground propagation in Tk::NumEntry
+
 *** Release 2.06
   - documented NumEntryPlain's -command option
   - added -browsecmd option to NumEntryPlain
