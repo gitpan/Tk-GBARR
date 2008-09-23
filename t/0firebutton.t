@@ -1,15 +1,26 @@
 use strict;
 use vars '$loaded';
+
+my $top1;
+my $top2;
+BEGIN {
+    if (!eval {
+	# two MainWindows test...
+	require Tk;
+	$top1 = MainWindow->new;
+	$top2 = MainWindow->new;
+    }) {
+	print "1..0 # skip cannot open DISPLAY\n";
+	CORE::exit;
+    }
+}
+
 BEGIN { $^W= 1; $| = 1; print "1..10\n"; }
 END {print "not ok 1\n" unless $loaded;}
 use Tk::FireButton;
 $loaded = 1;
 my $ok = 1;
 print "ok " . $ok++ . "\n";
-
-# two MainWindows test...
-my $top1 = new MainWindow;
-my $top2 = new MainWindow;
 
 my $fb;
 eval {

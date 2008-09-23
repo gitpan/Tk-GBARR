@@ -1,11 +1,13 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         Tk-GBARR
-version:      2.07
-version_from: 
-installdirs:  site
-requires:
+--- #YAML:1.0
+name:                Tk-GBARR
+version:             2.08
+abstract:            Additional Tk widgets (NumEntry, FireButton, Cloth...)
+license:             ~
+author:              ~
+generated_by:        ExtUtils::MakeMaker version 6.44
+distribution_type:   module
+requires:     
     Tk:                            402.002
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.30
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.3.html
+    version: 1.3

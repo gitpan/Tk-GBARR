@@ -33,17 +33,21 @@ BEGIN
 	TFrame
       );
 
-   plan test => (10*@class+3);
-
   };
 
-eval { require Tk; };
-ok($@, "", "loading Tk module");
-
 my $mw;
-eval {$mw = Tk::MainWindow->new();};
-ok($@, "", "can't create MainWindow");
-ok(Tk::Exists($mw), 1, "MainWindow creation failed");
+BEGIN {
+    if (!eval {
+	require Tk;
+	$mw = Tk::MainWindow->new();
+	Tk::Exists($mw);
+    }) {
+	print "1..0 # skip cannot open DISPLAY\n";
+	CORE::exit;
+    }
+}
+
+plan test => 10*@class;
 
 my $w;
 foreach my $class (@class)

@@ -1,4 +1,4 @@
-# $Id: TFrame.pm,v 2.1 2000/10/22 17:12:40 eserte Exp $
+# $Id: TFrame.pm,v 2.2 2007/12/06 20:09:39 eserte Exp $
 
 package Tk::TFrame;
 
@@ -7,7 +7,7 @@ use strict;
 use vars qw($VERSION @ISA);
 
 @ISA = qw(Tk::Derived Tk::Frame);
-$VERSION = sprintf("%d.%02d", q$Revision: 2.1 $ =~ /(\d+)\.(\d+)/);
+$VERSION = sprintf("%d.%02d", q$Revision: 2.2 $ =~ /(\d+)\.(\d+)/);
 
 Construct Tk::Widget "TFrame";
 
@@ -175,9 +175,9 @@ Tk::TFrame - A Titled Frame widget
     use Tk::TFrame;
     
     $frame1 = $parent->TFrame(
-	-label => [ -text => 'Title' ]
+	-label => [ -text => 'Title' ],
 	-borderwidth => 2,
-	-relief => 'groove'
+	-relief => 'groove',
     );
 
     # or simply

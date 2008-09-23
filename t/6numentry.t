@@ -1,5 +1,17 @@
 use strict;
 use vars '$loaded';
+
+my $top;
+BEGIN {
+    if (!eval {
+	require Tk;
+	$top = MainWindow->new;
+    }) {
+	print "1..0 # skip cannot open DISPLAY\n";
+	CORE::exit;
+    }
+}
+
 BEGIN { $^W= 1; $| = 1; print "1..6\n"; }
 END {print "not ok 1\n" unless $loaded;}
 use Tk::NumEntry;
@@ -62,7 +74,6 @@ sub NumEntryPlainWidget { "MyNumEntryPlain"  }
 # back to main again
 package main;
 
-my $top = new MainWindow;
 my $ne;
 eval {
     $ne = $top->MyNumEntry(-defaultvalue => 42,

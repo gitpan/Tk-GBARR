@@ -16,9 +16,17 @@ BEGIN
 use strict;
 use Tk;
 
-BEGIN { plan tests => 10 };
+my $mw;
+BEGIN 
+  {
+    if (!eval { $mw = Tk::MainWindow->new })
+      {
+	print "1..0 # skip cannot open DISPLAY\n";
+	CORE::exit;
+      }
+  }
 
-my $mw = Tk::MainWindow->new;
+BEGIN { plan tests => 10 };
 
 my $nep;
 {
